@@ -31,7 +31,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto text-center space-y-8">
           <div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground text-balance mb-6">
-              Decentralized Savings Groups, Made Simple
+              Chama Savings made Simpler and More Secure
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 text-pretty">
               Join or create a Chama savings group on the blockchain. Manage contributions, track payouts, and build wealth together with transparency and security.

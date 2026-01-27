@@ -103,7 +103,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6 text-sm text-muted-foreground">
-          <div>&copy; {new Date().getFullYear()} Chama. All rights reserved.</div>
+          <div>&copy; {new Date().getFullYear()} Decentralised Chama. All rights reserved.</div>
           <div>
             Made With ❤️ by{' '}
             <a

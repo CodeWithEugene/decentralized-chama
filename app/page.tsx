@@ -7,13 +7,12 @@ import { ArrowRight, Users, TrendingUp, Lock, Zap } from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black flex flex-col">
       {/* Navigation */}
       <nav className="fixed top-0 w-full backdrop-blur-md bg-background/80 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2 text-2xl font-bold text-primary">
-            <img src="/icon.png" alt="Chama Icon" className="h-8 w-8" />
-            <span>Chama</span>
+          <div className="flex items-center">
+            <img src="/logo.png" alt="Chama Logo" className="h-10 w-auto" />
           </div>
           <div className="flex gap-4 items-center">
             <Link href="/auth">
@@ -26,14 +25,15 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-10 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow flex flex-col justify-center">
+        {/* Hero Section */}
+      <section className="pt-24 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           <div>
-            <h1 className="text-5xl sm:text-6xl font-bold text-foreground text-balance mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground text-balance mb-6">
               Decentralized Savings Groups, Made Simple
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8 text-pretty">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 text-pretty">
               Join or create a Chama savings group on the blockchain. Manage contributions, track payouts, and build wealth together with transparency and security.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
@@ -55,55 +55,53 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-card/30">
         <div className="max-w-6xl mx-auto">
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Feature 1 */}
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-card/50 transition-colors">
-              <Users className="w-8 h-8 text-primary mb-4" />
+<div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
+              <Users className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Group Management</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground group-hover:text-white">
                 Create and manage savings groups with transparent member tracking and role management.
               </p>
             </div>
 
-            {/* Feature 2 */}
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-card/50 transition-colors">
-              <TrendingUp className="w-8 h-8 text-primary mb-4" />
+            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
+              <TrendingUp className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Track Contributions</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground group-hover:text-white">
                 Monitor all contributions in real-time with blockchain-verified transaction records.
               </p>
             </div>
 
-            {/* Feature 3 */}
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-card/50 transition-colors">
-              <Zap className="w-8 h-8 text-primary mb-4" />
+            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
+              <Zap className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Automated Payouts</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground group-hover:text-white">
                 Rotation-based payouts ensure every member gets their turn with smart contract automation.
               </p>
             </div>
 
             {/* Feature 4 */}
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-card/50 transition-colors">
-              <Lock className="w-8 h-8 text-primary mb-4" />
+            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
+              <Lock className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Blockchain Security</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground group-hover:text-white">
                 Powered by Hedera and Oasis Sapphire for secure, immutable transaction history.
               </p>
             </div>
           </div>
         </div>
       </section>
+      </main>
 
 
 
 
 
       {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 lg:px-8">
+      <footer className="py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6 text-sm text-muted-foreground">
           <div>&copy; {new Date().getFullYear()} Chama. All rights reserved.</div>
           <div>

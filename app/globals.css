@@ -124,7 +124,13 @@
   }
 }
 
+
 /* Custom Scrollbar */
+html {
+  scrollbar-color: #8b3bff transparent;
+  scrollbar-width: thin;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

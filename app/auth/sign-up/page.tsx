@@ -18,6 +18,43 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 
+const GoogleIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className}>
+    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+  </svg>
+)
+
+const EthereumIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className={className}>
+    <g fill="none" fillRule="evenodd">
+      <circle cx="16" cy="16" r="16" fill="#627EEA"/>
+      <g fill="#FFF" fillRule="nonzero">
+        <path fillOpacity=".602" d="M16.498 4v8.87l7.497 3.35z"/>
+        <path d="M16.498 4L9 16.22l7.498-3.35z"/>
+        <path fillOpacity=".602" d="M16.498 21.968l7.497-4.353-7.497-3.349z"/>
+        <path d="M16.498 21.968V28L9 17.615z"/>
+        <path fillOpacity=".2" d="M16.498 20.573l7.497-4.353-7.497-3.348z"/>
+        <path fillOpacity=".602" d="M16.498 12.872v3.353l-7.498-3.353z"/>
+      </g>
+    </g>
+  </svg>
+)
+
+const SolanaIcon = ({ className }: { className?: string }) => (
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 311" className={className}>
+      <defs>
+         <linearGradient id="solana_gradient" x1="0.659" y1="0.518" x2="0.108" y2="0.638" gradientUnits="objectBoundingBox">
+            <stop offset="0" stopColor="#00ffa3"/>
+            <stop offset="1" stopColor="#dc1fff"/>
+         </linearGradient>
+      </defs>
+      <path fill="url(#solana_gradient)" d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zm269.6-104.4c-2.4 2.4-5.7 3.8-9.2 3.8H7.6c-5.8 0-8.7-7-4.6-11.1l62.7-62.7c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7zM64.6 29.3c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1L333.1 99.3c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 29.3z"/>
+   </svg>
+)
+
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -56,16 +93,19 @@ export default function SignUpPage() {
     setError(null)
 
     try {
+      // @ts-ignore - MetaMask
       if (!window.ethereum) {
         throw new Error('Please install MetaMask to connect Ethereum wallet')
       }
 
+      // @ts-ignore - MetaMask
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
       const address = accounts[0]
 
       const message = `Sign this message to create account on Chama\n\nWallet: ${address}\nTimestamp: ${Date.now()}`
+      // @ts-ignore - MetaMask
       const signature = await window.ethereum.request({
         method: 'personal_sign',
         params: [message, address],
@@ -214,8 +254,8 @@ export default function SignUpPage() {
               <ArrowLeft size={16} />
               Back to Home
             </Link>
-            <CardTitle>Create Account</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-center">Create Account</CardTitle>
+            <CardDescription className="text-center">
               Choose how you want to create your account
             </CardDescription>
           </CardHeader>
@@ -230,15 +270,11 @@ export default function SignUpPage() {
             <Button
               onClick={handleGoogleSignUp}
               variant="outline"
-              className="w-full bg-transparent justify-start gap-3 h-auto py-3"
+              className="w-full bg-transparent justify-center gap-3 h-auto py-3"
               disabled={isLoading}
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <text x="50%" y="50%" dominantBaseline="middle" textAnchor="middle" className="text-lg">
-                  🔵
-                </text>
-              </svg>
-              <div className="text-left">
+              <GoogleIcon className="w-5 h-5" />
+              <div className="text-center">
                 <div className="font-semibold">Sign up with Google</div>
               </div>
             </Button>
@@ -246,11 +282,11 @@ export default function SignUpPage() {
             <Button
               onClick={handleEthereumSignUp}
               variant="outline"
-              className="w-full bg-transparent justify-start gap-3 h-auto py-3"
+              className="w-full bg-transparent justify-center gap-3 h-auto py-3"
               disabled={isLoading}
             >
-              <div className="w-5 h-5 flex items-center justify-center text-lg">Ξ</div>
-              <div className="text-left">
+              <EthereumIcon className="w-5 h-5" />
+              <div className="text-center">
                 <div className="font-semibold">Connect Ethereum Wallet</div>
               </div>
             </Button>
@@ -258,11 +294,11 @@ export default function SignUpPage() {
             <Button
               onClick={handleSolanaSignUp}
               variant="outline"
-              className="w-full bg-transparent justify-start gap-3 h-auto py-3"
+              className="w-full bg-transparent justify-center gap-3 h-auto py-3"
               disabled={isLoading}
             >
-              <div className="w-5 h-5 flex items-center justify-center text-lg">◎</div>
-              <div className="text-left">
+              <SolanaIcon className="w-5 h-5" />
+              <div className="text-center">
                 <div className="font-semibold">Connect Solana Wallet</div>
               </div>
             </Button>
@@ -283,7 +319,7 @@ export default function SignUpPage() {
                 setError(null)
               }}
               variant="outline"
-              className="w-full bg-transparent justify-start gap-3"
+              className="w-full bg-transparent justify-center gap-3"
               disabled={isLoading}
             >
               <Mail size={18} />

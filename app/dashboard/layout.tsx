@@ -34,6 +34,42 @@ export default function DashboardLayout({
     checkAuth()
   }, [supabase, router])
 
+  // Auto-logout functionality
+  useEffect(() => {
+    if (!isAuthed) return
+
+    let timeoutId: NodeJS.Timeout
+
+    const resetTimer = () => {
+      if (timeoutId) clearTimeout(timeoutId)
+      timeoutId = setTimeout(async () => {
+        await supabase.auth.signOut()
+        router.push('/')
+      }, 300000) // 5 minutes in ms
+    }
+
+    // Events to track activity
+    const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart']
+
+    // Setup listeners
+    const setup = () => {
+      events.forEach(event => {
+        document.addEventListener(event, resetTimer)
+      })
+      resetTimer() // Initial start
+    }
+
+    setup()
+
+    // Cleanup
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+      events.forEach(event => {
+        document.removeEventListener(event, resetTimer)
+      })
+    }
+  }, [isAuthed, supabase, router])
+
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/')

@@ -62,10 +62,10 @@ export function ContributionsPage() {
   const totalAmount = contributions.reduce((sum, c) => sum + parseInt(c.amount.replace('$', '')), 0);
 
   return (
-    <div className="flex-1 overflow-auto">
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <div className="flex-1">
+      <div className="p-4 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div className="mb-4 flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Contributions</h1>
             <p className="text-sm sm:text-base text-muted-foreground">Track all member contributions to the group.</p>
@@ -77,7 +77,7 @@ export function ContributionsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Contributions</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">${totalAmount}</h3>

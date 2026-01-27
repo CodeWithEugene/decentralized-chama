@@ -13,7 +13,7 @@ const data = [
 
 export function SimpleLineChart() {
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={200}>
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.28 0 0)" />
         <XAxis dataKey="month" stroke="oklch(0.7 0 0)" />

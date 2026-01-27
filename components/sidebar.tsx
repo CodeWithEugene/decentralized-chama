@@ -54,7 +54,7 @@ export function Sidebar({ currentPage, onPageChange }: SidebarProps) {
       >
         {/* Logo */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-primary">CHAMA</h1>
+          <h1 className="text-2xl font-bold text-primary">dCHAMA</h1>
           <p className="text-xs text-muted-foreground mt-1">Savings Group dApp</p>
         </div>
 

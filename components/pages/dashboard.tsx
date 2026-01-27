@@ -38,16 +38,16 @@ export function DashboardPage() {
   ];
 
   return (
-    <div className="flex-1 overflow-auto">
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <div className="flex-1">
+      <div className="p-4 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Dashboard</h1>
           <p className="text-sm sm:text-base text-muted-foreground">Welcome back! Here's your savings group overview.</p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -66,7 +66,7 @@ export function DashboardPage() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4">
           {/* Contribution Chart */}
           <Card className="lg:col-span-2 p-4 sm:p-6 bg-card border-border overflow-x-auto">
             <h2 className="text-base sm:text-lg font-bold text-foreground mb-4">Contribution History</h2>
@@ -78,7 +78,7 @@ export function DashboardPage() {
           {/* Recent Activity */}
           <Card className="p-4 sm:p-6 bg-card border-border">
             <h2 className="text-base sm:text-lg font-bold text-foreground mb-4">Recent Activity</h2>
-            <div className="space-y-3 max-h-96 overflow-y-auto">
+            <div className="space-y-3">
               {[
                 { action: 'John contributed', amount: '+$500' },
                 { action: 'Payout processed', amount: '-$1200' },

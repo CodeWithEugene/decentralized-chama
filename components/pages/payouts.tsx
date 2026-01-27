@@ -62,16 +62,16 @@ export function PayoutsPage() {
   const nextPayoutDate = payouts.find((p) => p.status === 'pending')?.date || 'N/A';
 
   return (
-    <div className="flex-1 overflow-auto">
-      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+    <div className="flex-1">
+      <div className="p-4 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Payouts</h1>
           <p className="text-sm sm:text-base text-muted-foreground">Manage and track payout rounds for group members.</p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Paid Out</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">${totalPayouts}</h3>
@@ -90,7 +90,7 @@ export function PayoutsPage() {
         </div>
 
         {/* Upcoming Payout Alert */}
-        <Card className="p-4 sm:p-6 bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 mb-6 sm:mb-8">
+        <Card className="p-4 sm:p-6 bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 mb-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1">Round 2 Payout In Progress</h3>
@@ -196,7 +196,7 @@ export function PayoutsPage() {
         </div>
 
         {/* Payout History Info */}
-        <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Completed Rounds</h3>
             <div className="space-y-3">

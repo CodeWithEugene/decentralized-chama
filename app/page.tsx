@@ -3,12 +3,11 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { PrivacyPopup, TermsPopup, ContactPopup } from '@/components/pages/legal-popups'
-import { ArrowRight, Users, TrendingUp, Lock, Zap, Sun, Moon } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { ArrowRight, Users, TrendingUp, Lock, Zap } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function LandingPage() {
-  const { setTheme, theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -30,15 +29,7 @@ export default function LandingPage() {
             <img src="/logo.png" alt="Chama Logo" className="h-16 w-auto" />
           </div>
           <div className="flex gap-4 items-center">
-             {mounted && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              >
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-              </Button>
-            )}
+             {mounted && <ThemeToggle />}
             <Link href="/auth">
               <Button variant="ghost">Login</Button>
             </Link>
@@ -49,7 +40,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <main className="flex-grow flex flex-col justify-center">
+      <main className="flex-1 bg-background text-foreground">
         {/* Hero Section */}
       <section className="pt-40 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-8">

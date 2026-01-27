@@ -1,5 +1,6 @@
 'use client';
 
+import { ThemeToggle } from './theme-toggle';
 import { Home, Users, TrendingUp, Send, LogOut, Menu, X, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -88,15 +89,16 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
           })}
         </nav>
 
-        <div className="pt-6 border-t border-sidebar-border mt-auto">
+        <div className="pt-6 border-t border-sidebar-border mt-auto flex items-center justify-between">
           <Button
             variant="ghost"
-            className={`w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-500/10 ${isCollapsed ? 'justify-center' : ''}`}
+            className={`w-full justify-start gap-2 text-destructive hover:text-destructive/90 hover:bg-destructive/10 ${isCollapsed ? 'justify-center' : ''}`}
             onClick={handleLogout}
           >
             <LogOut size={18} />
             {!isCollapsed && 'Logout'}
           </Button>
+          <ThemeToggle />
         </div>
       </aside>
     </>

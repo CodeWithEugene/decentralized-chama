@@ -1,6 +1,10 @@
 'use client';
 
 import { ethers } from 'ethers';
+import './web3-types';
+import { contractAbi, contractAddress } from './contract-config';
+import { oasisSapphire } from 'viem/chains';
+import { createClient } from './supabase/client';
 
 // ============================================================================
 // CONFIGURATION - Update these with your contract details
@@ -93,7 +97,7 @@ export interface Payout {
 // PROVIDER & SIGNER MANAGEMENT
 // ============================================================================
 
-let provider: ethers.Provider | null = null;
+let provider: ethers.BrowserProvider | null = null;
 let signer: ethers.Signer | null = null;
 
 /**
@@ -119,7 +123,7 @@ export async function initializeProvider(): Promise<void> {
 /**
  * Get the current provider instance
  */
-export function getProvider(): ethers.Provider {
+export function getProvider(): ethers.BrowserProvider {
   if (!provider) {
     throw new ContractError(
       'Provider not initialized. Call initializeProvider first.',
@@ -132,21 +136,23 @@ export function getProvider(): ethers.Provider {
 /**
  * Get the current signer instance
  */
-export function getSigner(): ethers.Signer {
-  if (!signer) {
-    throw new ContractError(
-      'Signer not initialized. Call initializeProvider first.',
-      'SIGNER_NOT_INITIALIZED'
-    );
-  }
-  return signer;
+export async function getSigner(): Promise<ethers.Signer> {
+    const currentProvider = getProvider();
+    const currentSigner = await currentProvider.getSigner();
+    if (!currentSigner) {
+        throw new ContractError(
+        'Signer not initialized. Call initializeProvider first.',
+        'SIGNER_NOT_INITIALIZED'
+        );
+    }
+    return currentSigner;
 }
 
 /**
  * Get contract instance with signer (for write operations)
  */
-function getChamaContract() {
-  const contractSigner = getSigner();
+async function getChamaContract() {
+  const contractSigner = await getSigner();
   return new ethers.Contract(
     CONTRACT_CONFIG.address,
     CHAMA_CONTRACT_ABI,
@@ -458,8 +464,9 @@ export const walletService = {
    */
   async getConnectedAddress(): Promise<string | null> {
     try {
-      if (!signer) return null;
-      return await signer.getAddress();
+      const currentSigner = await getSigner();
+      if (!currentSigner) return null;
+      return await currentSigner.getAddress();
     } catch (error) {
       console.error('[v0] Error getting connected address:', error);
       return null;

@@ -4,24 +4,24 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.18 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.18 0 0);
-  --popover-foreground: oklch(0.95 0 0);
+  --background: oklch(98.5% 0 0);
+  --foreground: oklch(0.12 0 0);
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(0.12 0 0);
   --primary: oklch(0.6 0.3 290);
   --primary-foreground: oklch(0.95 0 0);
-  --secondary: oklch(0.25 0 0);
-  --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.35 0 0);
-  --muted-foreground: oklch(0.7 0 0);
+  --secondary: oklch(95% 0 0);
+  --secondary-foreground: oklch(0.12 0 0);
+  --muted: oklch(90% 0 0);
+  --muted-foreground: oklch(0.45 0 0);
   --accent: oklch(0.6 0.3 290);
   --accent-foreground: oklch(0.95 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.95 0 0);
-  --border: oklch(0.28 0 0);
-  --input: oklch(0.22 0 0);
+  --border: oklch(88% 0 0);
+  --input: oklch(95% 0 0);
   --ring: oklch(0.6 0.3 290);
   --chart-1: oklch(0.6 0.3 290);
   --chart-2: oklch(0.65 0.25 260);
@@ -29,14 +29,15 @@
   --chart-4: oklch(0.7 0.2 40);
   --chart-5: oklch(0.75 0.22 180);
   --radius: 0.625rem;
-  --sidebar: oklch(0.15 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar: oklch(100% 0 0);
+  --sidebar-foreground: oklch(0.12 0 0);
   --sidebar-primary: oklch(0.6 0.3 290);
   --sidebar-primary-foreground: oklch(0.95 0 0);
-  --sidebar-accent: oklch(0.28 0 0);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.28 0 0);
+  --sidebar-accent: oklch(95% 0 0);
+  --sidebar-accent-foreground: oklch(0.12 0 0);
+  --sidebar-border: oklch(88% 0 0);
   --sidebar-ring: oklch(0.6 0.3 290);
+  --primary-darker: oklch(0.5 0.25 290);
 }
 
 .dark {
@@ -72,6 +73,7 @@
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.28 0 0);
   --sidebar-ring: oklch(0.6 0.3 290);
+  --primary-darker: oklch(0.5 0.25 290);
 }
 
 @theme inline {
@@ -127,7 +129,7 @@
 
 /* Custom Scrollbar */
 html {
-  scrollbar-color: #8b3bff transparent;
+  scrollbar-color: var(--primary) transparent;
   scrollbar-width: thin;
 }
 
@@ -140,10 +142,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8b3bff;
+  background: var(--primary);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #7a35e0;
+  background: var(--primary-darker);
 }

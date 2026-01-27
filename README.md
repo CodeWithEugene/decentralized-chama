@@ -1,6 +1,8 @@
-# Decentralized Chama KRNL
+# Decentralised Chama
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+DChama is a decentralized financial platform that digitizes traditional Kenyan informal savings groups (Chamas) by using blockchain smart contracts to automate contributions, secure rotating payouts, and provide immutable, transparent record-keeping for all members.
+
+_Automatically synced with your [v0.app](https://v0.app) deployments_
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/eugene-gabriel/v0-decentralized-chama-krnl)
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/pc6H6iq7A5W)

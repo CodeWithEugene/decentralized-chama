@@ -8,25 +8,28 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Chama - Decentralized Savings Groups',
-  description: 'Manage your collaborative savings group on the blockchain with transparent, secure transactions',
+  metadataBase: new URL('https://dchama.vercel.app/'),
+  title: 'Decentralised Chama',
+  description: 'DChama is a decentralized financial platform that digitizes traditional Kenyan informal savings groups (Chamas) by using blockchain smart contracts to automate contributions, secure rotating payouts, and provide immutable, transparent record-keeping for all members.',
   generator: 'v0.app',
-  icons: {
-    icon: [
+  openGraph: {
+    title: 'Decentralised Chama',
+    description: 'DChama is a decentralized financial platform that digitizes traditional Kenyan informal savings groups (Chamas) by using blockchain smart contracts to automate contributions, secure rotating payouts, and provide immutable, transparent record-keeping for all members.',
+    url: 'https://dchama.vercel.app/',
+    siteName: 'Decentralised Chama',
+    images: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/icon.png', // Must be an absolute URL in production usually, but relative works for some scrapers if generic metadata base is set. Vercel usually handles relative in OG if metadataBase is set, but we'll stick to simple relative for now as requested.
+        width: 512, // Assuming standard icon size, beneficial to specify if known
+        height: 512,
+        alt: 'Decentralised Chama Logo',
       },
     ],
-    apple: '/apple-icon.png',
+    locale: 'en_US',
+    type: 'website',
+  },
+  icons: {
+    icon: '/icon.png',
   },
 }
 

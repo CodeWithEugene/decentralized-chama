@@ -210,7 +210,12 @@ export default function SignUpPage() {
 
   if (signUpSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted relative">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
             <Link
@@ -237,6 +242,7 @@ export default function SignUpPage() {
             </Button>
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }
@@ -244,7 +250,12 @@ export default function SignUpPage() {
   // Method selection view
   if (signUpMode === 'methods') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted relative">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
           <CardHeader>
             <Link
@@ -332,18 +343,24 @@ export default function SignUpPage() {
                 href="/auth"
                 className="text-primary underline underline-offset-4 hover:text-primary/80"
               >
-                Sign in
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+                  Sign in
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     )
   }
 
   // Email sign-up view
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+      <div className="hidden md:flex bg-muted relative">
+        <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+      </div>
+      <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
         <CardHeader>
           <button
@@ -439,6 +456,7 @@ export default function SignUpPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }

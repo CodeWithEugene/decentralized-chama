@@ -293,7 +293,11 @@ export default function AuthPage() {
   // Method selection view
   if (authMode === 'methods') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
           <CardHeader>
             <Link
@@ -396,6 +400,7 @@ export default function AuthPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }
@@ -403,7 +408,12 @@ export default function AuthPage() {
   // Email sign-in view
   if (authMode === 'email') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted relative">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
           <CardHeader>
             <button
@@ -488,6 +498,7 @@ export default function AuthPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }
@@ -495,7 +506,12 @@ export default function AuthPage() {
   // OTP sign-in view
   if (authMode === 'otp') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted relative">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
           <CardHeader>
             <button
@@ -581,6 +597,7 @@ export default function AuthPage() {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }
@@ -588,7 +605,12 @@ export default function AuthPage() {
   // Forgot password view
   if (authMode === 'forgot') {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+        <div className="hidden md:flex bg-muted relative">
+          <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
             <button
@@ -640,6 +662,7 @@ export default function AuthPage() {
             </form>
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }

@@ -27,7 +27,7 @@ export default function LandingPage() {
 
       <main className="flex-grow flex flex-col justify-center">
         {/* Hero Section */}
-      <section className="pt-24 pb-8 px-4 sm:px-6 lg:px-8">
+      <section className="pt-40 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           <div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground text-balance mb-6">
@@ -58,10 +58,10 @@ export default function LandingPage() {
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-card/30">
         <div className="max-w-6xl mx-auto">
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
               <Users className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
-              <h3 className="font-semibold text-lg mb-2">Group Management</h3>
+              <h3 className="font-semibold text-lg mb-2">Chama Management</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white">
                 Create and manage savings groups with transparent member tracking and role management.
               </p>

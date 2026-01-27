@@ -16,7 +16,8 @@ export async function GET(request: Request) {
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(
-    `${request.headers.get('origin')}/auth/error?message=Failed to exchange code for session`
-  )
+  // return the user to an error page with instructions
+  const { origin } = new URL(request.url)
+  console.error('Auth Callback Error: Code exchange failed or missing code')
+  return NextResponse.redirect(`${origin}/auth/error?message=Failed to exchange code for session`)
 }

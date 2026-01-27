@@ -93,11 +93,6 @@ export default function DashboardLayout({
   return (
     <>
       {children}
-      <div className="fixed bottom-6 right-6">
-        <Button onClick={handleLogout} variant="outline" size="sm">
-          Logout
-        </Button>
-      </div>
     </>
   )
 }

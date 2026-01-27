@@ -77,7 +77,7 @@ export function ContributionsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Contributions</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">${totalAmount}</h3>
@@ -92,6 +92,11 @@ export function ContributionsPage() {
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Average per Member</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-blue-400">${Math.round(totalAmount / totalContributions)}</h3>
             <p className="text-xs text-muted-foreground mt-2">Last 30 days</p>
+          </Card>
+           <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Pending</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400">{totalContributions - confirmedCount}</h3>
+            <p className="text-xs text-muted-foreground mt-2">Awaiting confirmation</p>
           </Card>
         </div>
 

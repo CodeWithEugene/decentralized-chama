@@ -71,7 +71,7 @@ export function PayoutsPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Paid Out</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground">${totalPayouts}</h3>
@@ -86,6 +86,11 @@ export function PayoutsPage() {
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Payout Amount</p>
             <h3 className="text-2xl sm:text-3xl font-bold text-blue-400">$1,200</h3>
             <p className="text-xs text-muted-foreground mt-2">Per member per round</p>
+          </Card>
+           <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Pending Payouts</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-orange-400">{payouts.length - completedPayouts}</h3>
+             <p className="text-xs text-muted-foreground mt-2">Awaiting completion</p>
           </Card>
         </div>
 

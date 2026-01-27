@@ -11,11 +11,17 @@ type PageType = 'dashboard' | 'members' | 'contributions' | 'payouts'
 
 export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard')
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background text-foreground pt-16 lg:pt-0">
-      <Sidebar currentPage={currentPage} onPageChange={setCurrentPage} />
-      <main className="flex-1 overflow-auto w-full">
+    <div className="flex h-screen bg-background text-foreground">
+      <Sidebar
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        isCollapsed={isCollapsed}
+        onCollapse={() => setIsCollapsed(!isCollapsed)}
+      />
+      <main className="flex-1 w-full">
         {currentPage === 'dashboard' && <DashboardPage />}
         {currentPage === 'members' && <MembersPage />}
         {currentPage === 'contributions' && <ContributionsPage />}

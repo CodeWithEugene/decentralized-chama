@@ -85,6 +85,26 @@ export function MembersPage() {
           </Button>
         </div>
 
+        {/* Stats (Moved to Top) */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+          <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Members</p>
+            <p className="text-2xl sm:text-3xl font-bold text-foreground">12</p>
+          </Card>
+          <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Active Members</p>
+            <p className="text-2xl sm:text-3xl font-bold text-green-400">10</p>
+          </Card>
+          <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Pending Requests</p>
+            <p className="text-2xl sm:text-3xl font-bold text-yellow-400">2</p>
+          </Card>
+           <Card className="p-4 sm:p-6 bg-card border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Inactive Members</p>
+            <p className="text-2xl sm:text-3xl font-bold text-red-400">0</p>
+          </Card>
+        </div>
+
         {/* Members Table - Mobile Card View + Desktop Table */}
         <div className="hidden sm:block">
           <Card className="bg-card border-border overflow-hidden">
@@ -154,21 +174,6 @@ export function MembersPage() {
           ))}
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4">
-          <Card className="p-4 sm:p-6 bg-card border-border">
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Members</p>
-            <p className="text-2xl sm:text-3xl font-bold text-foreground">12</p>
-          </Card>
-          <Card className="p-4 sm:p-6 bg-card border-border">
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Active Members</p>
-            <p className="text-2xl sm:text-3xl font-bold text-green-400">10</p>
-          </Card>
-          <Card className="p-4 sm:p-6 bg-card border-border">
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Pending Requests</p>
-            <p className="text-2xl sm:text-3xl font-bold text-yellow-400">2</p>
-          </Card>
-        </div>
       </div>
     </div>
   );

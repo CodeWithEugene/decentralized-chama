@@ -57,25 +57,16 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
         />
       )}
 
-      {/* Sidebar */}
       <aside
-        className={`fixed lg:relative h-screen bg-sidebar border-r border-sidebar-border flex flex-col p-6 z-40 transition-all duration-300 ${
+        className={`fixed lg:relative h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } ${isCollapsed ? 'w-20' : 'w-64'}`}
+        } ${isCollapsed ? 'w-20 p-4' : 'w-64 p-6'} z-40`}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center">
           {!isCollapsed && <img src="/logo.png" alt="Chama Logo" className="h-10 w-auto" />}
           {isCollapsed && <img src="/icon.png" alt="Chama Icon" className="h-8 w-8" />}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onCollapse}
-            className="hidden lg:flex"
-          >
-            <ChevronLeft className={`transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
-          </Button>
         </div>
-
+        
         <nav className="flex-1 space-y-2 mt-8">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -84,11 +75,11 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-sm sm:text-base ${
+                className={`w-full flex items-center gap-3 py-3 rounded-lg transition-colors text-sm sm:text-base ${
                   isActive
                     ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                     : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
-                } ${isCollapsed ? 'justify-center' : ''}`}
+                } ${isCollapsed ? 'justify-center px-2' : 'px-4'}`}
               >
                 <Icon size={20} />
                 {!isCollapsed && <span className="font-medium">{item.label}</span>}
@@ -97,21 +88,10 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
           })}
         </nav>
 
-        <div className="pt-6 border-t border-sidebar-border">
-          {!isCollapsed && (
-            <div className="flex items-center gap-3 px-4 py-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-sidebar-primary/30 flex items-center justify-center">
-                <span className="text-sm font-bold text-sidebar-primary-foreground">JS</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-sidebar-foreground truncate">John Smith</p>
-                <p className="text-xs text-muted-foreground truncate">0x742d...9f2c</p>
-              </div>
-            </div>
-          )}
+        <div className="pt-6 border-t border-sidebar-border mt-auto">
           <Button
             variant="ghost"
-            className={`w-full justify-start gap-2 text-sidebar-foreground hover:bg-sidebar-accent/50 ${isCollapsed ? 'justify-center' : ''}`}
+            className={`w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-500/10 ${isCollapsed ? 'justify-center' : ''}`}
             onClick={handleLogout}
           >
             <LogOut size={18} />

@@ -9,6 +9,8 @@ import { PayoutsPage } from '@/components/pages/payouts'
 
 type PageType = 'dashboard' | 'members' | 'contributions' | 'payouts'
 
+import { TopBar } from '@/components/top-bar';
+
 export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard')
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -21,12 +23,18 @@ export default function Dashboard() {
         isCollapsed={isCollapsed}
         onCollapse={() => setIsCollapsed(!isCollapsed)}
       />
-      <main className="flex-1 w-full">
-        {currentPage === 'dashboard' && <DashboardPage />}
-        {currentPage === 'members' && <MembersPage />}
-        {currentPage === 'contributions' && <ContributionsPage />}
-        {currentPage === 'payouts' && <PayoutsPage />}
-      </main>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <TopBar 
+          onToggleSidebar={() => setIsCollapsed(!isCollapsed)} 
+          isSidebarCollapsed={isCollapsed}
+        />
+        <main className="flex-1 overflow-auto w-full">
+          {currentPage === 'dashboard' && <DashboardPage />}
+          {currentPage === 'members' && <MembersPage />}
+          {currentPage === 'contributions' && <ContributionsPage />}
+          {currentPage === 'payouts' && <PayoutsPage />}
+        </main>
+      </div>
     </div>
   )
 }

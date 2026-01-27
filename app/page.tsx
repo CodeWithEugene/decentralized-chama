@@ -2,15 +2,19 @@
 
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { PrivacyPopup, TermsPopup, ContactPopup } from '@/components/pages/legal-popups'
 import { ArrowRight, Users, TrendingUp, Lock, Zap } from 'lucide-react'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full backdrop-blur-md bg-background/80 border-b border-border z-50">
+      <nav className="fixed top-0 w-full backdrop-blur-md bg-background/80 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold text-primary">Chama</div>
+          <div className="flex items-center gap-2 text-2xl font-bold text-primary">
+            <img src="/icon.png" alt="Chama Icon" className="h-8 w-8" />
+            <span>Chama</span>
+          </div>
           <div className="flex gap-4 items-center">
             <Link href="/auth">
               <Button variant="ghost">Login</Button>
@@ -23,7 +27,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           <div>
             <h1 className="text-5xl sm:text-6xl font-bold text-foreground text-balance mb-6">
@@ -46,30 +50,14 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 sm:gap-8 mt-16 pt-16 border-t border-border">
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">500+</div>
-              <p className="text-sm text-muted-foreground">Active Groups</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">10K+</div>
-              <p className="text-sm text-muted-foreground">Users</p>
-            </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-primary">$5M+</div>
-              <p className="text-sm text-muted-foreground">Saved</p>
-            </div>
-          </div>
+
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-card/30">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16 text-foreground">
-            Powerful Features for Group Savings
-          </h2>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Feature 1 */}
             <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-card/50 transition-colors">
@@ -110,87 +98,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Auth Methods Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center space-y-12">
-          <div>
-            <h2 className="text-4xl font-bold mb-4 text-foreground">
-              Multiple Ways to Connect
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Choose your preferred authentication method
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-8 rounded-lg border border-border">
-              <h3 className="font-semibold text-lg mb-4">Traditional Auth</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  Email & Password
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  One-Time Password (OTP)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  Google Sign-In
-                </li>
-              </ul>
-            </div>
-            <div className="p-8 rounded-lg border border-border">
-              <h3 className="font-semibold text-lg mb-4">Web3 Wallets</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  Ethereum (MetaMask)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  Solana (Phantom)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full" />
-                  More Coming Soon
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
-        <div className="max-w-4xl mx-auto text-center space-y-8 bg-card/50 rounded-lg p-12">
-          <h2 className="text-4xl font-bold text-foreground">
-            Ready to Start Saving Together?
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Join thousands of users managing their savings groups on Chama
-          </p>
-          <Link href="/auth/sign-up">
-            <Button size="lg" className="gap-2">
-              Create Your Group <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+
+
 
       {/* Footer */}
-      <footer className="border-t border-border py-8 px-4 sm:px-6 lg:px-8">
+      <footer className="py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6 text-sm text-muted-foreground">
-          <div>&copy; 2026 Chama. All rights reserved.</div>
+          <div>&copy; {new Date().getFullYear()} Chama. All rights reserved.</div>
+          <div>
+            Made With ❤️ by{' '}
+            <a
+              href="https://codewitheugene.top/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              CodeWithEugene
+            </a>
+          </div>
           <div className="flex gap-6 flex-wrap justify-center">
-            <Link href="#" className="hover:text-foreground transition-colors">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-foreground transition-colors">
-              Terms
-            </Link>
-            <Link href="#" className="hover:text-foreground transition-colors">
-              Contact
-            </Link>
+            <PrivacyPopup />
+            <TermsPopup />
+            <ContactPopup />
           </div>
         </div>
       </footer>

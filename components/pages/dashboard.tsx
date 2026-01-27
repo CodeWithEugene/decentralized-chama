@@ -39,26 +39,26 @@ export function DashboardPage() {
 
   return (
     <div className="flex-1 overflow-auto">
-      <div className="p-8 max-w-7xl">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back! Here's your savings group overview.</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Dashboard</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Welcome back! Here's your savings group overview.</p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card key={index} className="p-6 bg-card border-border">
+              <Card key={index} className="p-4 sm:p-6 bg-card border-border">
                 <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
-                    <h3 className="text-3xl font-bold text-foreground">{stat.value}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">{stat.subtext}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-1 truncate">{stat.label}</p>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-foreground truncate">{stat.value}</h3>
+                    <p className="text-xs text-muted-foreground mt-1 truncate">{stat.subtext}</p>
                   </div>
-                  <Icon className={`${stat.color} w-6 h-6`} />
+                  <Icon className={`${stat.color} w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 ml-2`} />
                 </div>
               </Card>
             );
@@ -66,17 +66,19 @@ export function DashboardPage() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Contribution Chart */}
-          <Card className="lg:col-span-2 p-6 bg-card border-border">
-            <h2 className="text-lg font-bold text-foreground mb-4">Contribution History</h2>
-            <SimpleLineChart />
+          <Card className="lg:col-span-2 p-4 sm:p-6 bg-card border-border overflow-x-auto">
+            <h2 className="text-base sm:text-lg font-bold text-foreground mb-4">Contribution History</h2>
+            <div className="w-full">
+              <SimpleLineChart />
+            </div>
           </Card>
 
           {/* Recent Activity */}
-          <Card className="p-6 bg-card border-border">
-            <h2 className="text-lg font-bold text-foreground mb-4">Recent Activity</h2>
-            <div className="space-y-3">
+          <Card className="p-4 sm:p-6 bg-card border-border">
+            <h2 className="text-base sm:text-lg font-bold text-foreground mb-4">Recent Activity</h2>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
               {[
                 { action: 'John contributed', amount: '+$500' },
                 { action: 'Payout processed', amount: '-$1200' },
@@ -84,9 +86,9 @@ export function DashboardPage() {
                 { action: 'Member joined', amount: '+1' },
                 { action: 'You contributed', amount: '+$500' },
               ].map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center pb-3 border-b border-border last:border-b-0">
-                  <p className="text-sm text-foreground">{item.action}</p>
-                  <p className="text-sm font-semibold text-primary">{item.amount}</p>
+                <div key={idx} className="flex justify-between items-center pb-3 border-b border-border last:border-b-0 gap-2">
+                  <p className="text-xs sm:text-sm text-foreground truncate flex-1">{item.action}</p>
+                  <p className="text-xs sm:text-sm font-semibold text-primary flex-shrink-0">{item.amount}</p>
                 </div>
               ))}
             </div>
@@ -94,11 +96,11 @@ export function DashboardPage() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-4">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
             Make Contribution
           </Button>
-          <Button variant="outline" className="border-border text-foreground hover:bg-card bg-transparent">
+          <Button variant="outline" className="border-border text-foreground hover:bg-card bg-transparent w-full sm:w-auto">
             View Group Details
           </Button>
         </div>

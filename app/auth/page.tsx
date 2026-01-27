@@ -294,8 +294,9 @@ export default function AuthPage() {
   if (authMode === 'methods') {
     return (
       <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-        <div className="hidden md:flex bg-muted">
+        <div className="hidden md:flex bg-muted relative">
           <img src="/auth.png" alt="Authentication" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8">
         <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">

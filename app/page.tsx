@@ -5,7 +5,17 @@ import Link from 'next/link'
 import { PrivacyPopup, TermsPopup, ContactPopup } from '@/components/pages/legal-popups'
 import { ArrowRight, Users, TrendingUp, Lock, Zap } from 'lucide-react'
 
+import { useEffect } from 'react'
+
 export default function LandingPage() {
+  useEffect(() => {
+    // Fail-safe: If Supabase redirects here with a code, forward to callback
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    if (code) {
+      window.location.href = `/auth/callback?code=${code}`
+    }
+  }, [])
   return (
     <div className="min-h-screen bg-black flex flex-col">
       {/* Navigation */}

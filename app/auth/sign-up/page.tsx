@@ -123,7 +123,7 @@ export default function SignUpPage() {
       })
 
       if (error) throw error
-      setSignUpSuccess(true)
+      router.push('/dashboard')
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'Ethereum sign up failed')
       setIsLoading(false)
@@ -165,7 +165,7 @@ export default function SignUpPage() {
       })
 
       if (error) throw error
-      setSignUpSuccess(true)
+      router.push('/dashboard')
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'Solana sign up failed')
       setIsLoading(false)

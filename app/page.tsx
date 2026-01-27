@@ -3,12 +3,16 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { PrivacyPopup, TermsPopup, ContactPopup } from '@/components/pages/legal-popups'
-import { ArrowRight, Users, TrendingUp, Lock, Zap } from 'lucide-react'
-
-import { useEffect } from 'react'
+import { ArrowRight, Users, TrendingUp, Lock, Zap, Sun, Moon } from 'lucide-react'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 export default function LandingPage() {
+  const { setTheme, theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
   useEffect(() => {
+    setMounted(true)
     // Fail-safe: If Supabase redirects here with a code, forward to callback
     const params = new URLSearchParams(window.location.search)
     const code = params.get('code')
@@ -16,6 +20,7 @@ export default function LandingPage() {
       window.location.href = `/auth/callback?code=${code}`
     }
   }, [])
+
   return (
     <div className="min-h-screen bg-black flex flex-col">
       {/* Navigation */}
@@ -25,6 +30,15 @@ export default function LandingPage() {
             <img src="/logo.png" alt="Chama Logo" className="h-16 w-auto" />
           </div>
           <div className="flex gap-4 items-center">
+             {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </Button>
+            )}
             <Link href="/auth">
               <Button variant="ghost">Login</Button>
             </Link>

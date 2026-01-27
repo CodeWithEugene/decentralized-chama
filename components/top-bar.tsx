@@ -119,10 +119,19 @@ export function TopBar({ onToggleSidebar, isSidebarCollapsed }: TopBarProps) {
 
         {/* Wallet / User */}
         <div className="flex items-center gap-2 pl-2 border-l border-border">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="hidden sm:flex gap-2 mr-2"
+          >
+            <Wallet size={16} />
+            <span>0x74...9f2c</span>
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:bg-transparent">
-                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0 overflow-hidden hover:bg-transparent focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-primary/20 text-sm font-bold text-primary">
                    JS
                 </div>
               </Button>

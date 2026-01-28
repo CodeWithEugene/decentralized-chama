@@ -30,10 +30,13 @@ export default function LandingPage() {
           </div>
           <div className="flex gap-4 items-center">
              {mounted && <ThemeToggle />}
-            <Link href="/auth">
+            <Link href="/auth/sign-up" className="sm:hidden">
+              <Button size="sm">Get Started</Button>
+            </Link>
+            <Link href="/auth" className="hidden sm:block">
               <Button variant="ghost">Login</Button>
             </Link>
-            <Link href="/auth/sign-up">
+            <Link href="/auth/sign-up" className="hidden sm:block">
               <Button>Sign Up</Button>
             </Link>
           </div>
@@ -52,7 +55,7 @@ export default function LandingPage() {
               Join or create a Chama savings group on the blockchain. Manage contributions, track payouts, and build wealth together with transparency and security.
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/auth/sign-up">
+              <Link href="/auth/sign-up" className="hidden sm:block">
                 <Button size="lg" className="gap-2">
                   Get Started <ArrowRight className="w-4 h-4" />
                 </Button>

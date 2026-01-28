@@ -77,6 +77,49 @@ export function DashboardPage() {
     },
   ];
 
+  // Show connect wallet prompt if not connected
+  if (!isConnected) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center max-w-2xl mx-auto">
+        <div className="mb-6 p-4 rounded-full bg-primary/10">
+          <Wallet className="h-16 w-16 text-primary" />
+        </div>
+        <h2 className="text-3xl font-bold mb-4 text-foreground">Welcome to DChama!</h2>
+        <p className="text-lg text-muted-foreground mb-8">
+          To get started with your decentralized savings group, please connect your wallet.
+        </p>
+        <div className="bg-card border border-border rounded-lg p-6 mb-8 text-left">
+          <h3 className="font-semibold mb-3 text-foreground">What you can do:</h3>
+          <ul className="space-y-2 text-muted-foreground">
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-1">✓</span>
+              <span>Create or join Chama savings groups</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-1">✓</span>
+              <span>Contribute ETH securely to smart contract vaults</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-1">✓</span>
+              <span>Track contributions and automated payouts in real-time</span>
+            </li>
+          </ul>
+        </div>
+        <Button 
+          onClick={connect} 
+          size="lg"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
+        >
+          <Wallet className="h-5 w-5" />
+          Connect Wallet to Continue
+        </Button>
+        <p className="text-sm text-muted-foreground mt-4">
+          Running on Sepolia Testnet • Make sure MetaMask is installed
+        </p>
+      </div>
+    );
+  }
+
   if (loadingGroups || (activeGroupId && isGroupLoading)) {
       return (
           <div className="flex items-center justify-center h-full">

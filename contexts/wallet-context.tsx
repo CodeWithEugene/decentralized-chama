@@ -28,28 +28,32 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     error: null,
   });
 
-  // Initialize wallet connection on mount
+
+  // Initialize wallet listeners on mount (but don't auto-connect)
   useEffect(() => {
     const initializeWallet = async () => {
       try {
         // Import dynamically to avoid SSR issues
         const { initializeProvider } = await import('@/lib/contract');
         
-        // Try to initialize provider first (if wallet is available)
+        // Initialize provider but DON'T auto-connect
         if (typeof window !== 'undefined' && window.ethereum) {
-             await initializeProvider();
-             
-             const address = await walletService.getConnectedAddress();
-             if (address) {
-               const balance = await walletService.getBalance(address);
-               setState({
-                 address,
-                 isConnected: true,
-                 isConnecting: false,
-                 balance,
-                 error: null,
-               });
-             }
+          await initializeProvider();
+          
+          // REMOVED: Auto-connect logic
+          // User must manually click "Connect Wallet" button
+          // 
+          // const address = await walletService.getConnectedAddress();
+          // if (address) {
+          //   const balance = await walletService.getBalance(address);
+          //   setState({
+          //     address,
+          //     isConnected: true,
+          //     isConnecting: false,
+          //     balance,
+          //     error: null,
+          //   });
+          // }
         }
       } catch (error) {
         console.error('Failed to initialize wallet:', error);

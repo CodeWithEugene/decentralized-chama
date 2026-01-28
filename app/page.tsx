@@ -74,24 +74,21 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
-              <Users className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
+<div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
               <h3 className="font-semibold text-lg mb-2">Chama Management</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Create and manage savings groups with transparent member tracking and role management.
               </p>
             </div>
 
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
-              <TrendingUp className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
+            <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
               <h3 className="font-semibold text-lg mb-2">Track Contributions</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Monitor all contributions in real-time with blockchain-verified transaction records.
               </p>
             </div>
 
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
-              <Zap className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
+            <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
               <h3 className="font-semibold text-lg mb-2">Automated Payouts</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Rotation-based payouts ensure every member gets their turn with smart contract automation.
@@ -99,7 +96,7 @@ export default function LandingPage() {
             </div>
 
             {/* Feature 4 */}
-            <div className="p-6 rounded-lg border border-border bg-background/50 hover:bg-primary hover:text-white transition-colors group">
+            <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
               <Lock className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Blockchain Security</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">

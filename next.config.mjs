@@ -13,9 +13,7 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    turbopack: {
-      root: __dirname,
-    },
+    // turbopack key removed as it is invalid in this version
   },
  
 }

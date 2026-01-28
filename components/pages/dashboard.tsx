@@ -11,7 +11,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
 
 export function DashboardPage() {
-  const { address, isConnected } = useWallet();
+  const { address, isConnected, connect } = useWallet();
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
   const [loadingGroups, setLoadingGroups] = useState(false);
   
@@ -100,6 +100,10 @@ export function DashboardPage() {
      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
          <h2 className="text-2xl font-bold mb-4">Connect Wallet</h2>
          <p className="text-muted-foreground mb-8">Please connect your wallet to view your dashboard.</p>
+         <Button onClick={() => connect()} className="gap-2">
+            <Wallet size={16} />
+            Connect Wallet
+         </Button>
      </div>
     )
   }

@@ -25,6 +25,10 @@ export function useChamaGroup(groupId: string) {
 
   // Load group data
   const loadGroup = useCallback(async () => {
+    if (!groupId) {
+        setState(prev => ({ ...prev, isLoading: false, group: null }));
+        return;
+    }
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
       // Fetch from Supabase for faster load, fallback to contract or sync
@@ -75,9 +79,15 @@ export function useChamaGroup(groupId: string) {
           error: null,
         });
       } else {
-         // Fallback to contract if not in DB (or valid group ID not found)
-         // For now, keep existing logic as fallback or just error
-         // Keeping existing logic for now as fallback
+          // Fallback to contract if not in DB 
+          // Only attempt if provider is initialized to avoid errors
+          const { isProviderInitialized } = await import('@/lib/contract');
+          
+          if (!isProviderInitialized()) {
+             setState((prev) => ({ ...prev, isLoading: false }));
+             return;
+          }
+
           const [group, members, contributions, payouts] = await Promise.all([
             contractService.getGroup(groupId),
             contractService.getMembers(groupId),

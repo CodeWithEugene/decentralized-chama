@@ -60,23 +60,23 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
       )}
 
       <aside
-        className={`fixed lg:relative h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ${
+        className={`fixed lg:relative h-[100svh] bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } ${isCollapsed ? 'w-20 p-4' : 'w-64 p-6'} z-40`}
+        } ${isCollapsed ? 'w-20 p-4' : 'w-64 p-4 sm:p-6'} z-40 overflow-y-auto lg:overflow-visible`}
       >
-        <div className="relative flex items-center justify-center h-16 my-4">
+        <div className="relative flex items-center justify-center h-12 sm:h-16 my-2 sm:my-4 flex-shrink-0">
           {!isCollapsed ? (
-            <div className="relative h-12 w-40">
+            <div className="relative h-10 w-32 sm:h-12 sm:w-40">
                 <Image src="/logo.png" alt="Chama Logo" fill className="object-contain" priority />
             </div>
           ) : (
-            <div className="relative h-10 w-10">
+            <div className="relative h-8 w-8 sm:h-10 sm:w-10">
                  <Image src="/icon.png" alt="Chama Icon" fill className="object-contain" priority />
             </div>
           )}
         </div>
         
-        <nav className="flex-1 space-y-2 mt-8">
+        <nav className="flex-1 space-y-1 sm:space-y-2 mt-4 sm:mt-8 overflow-y-auto no-scrollbar">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
@@ -84,11 +84,11 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}
-                className={`w-full flex items-center gap-3 py-3 rounded-lg transition-colors text-sm sm:text-base ${
+                className={`w-full flex items-center gap-3 py-2.5 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
                   isActive
                     ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                     : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
-                } ${isCollapsed ? 'justify-center px-2' : 'px-4'}`}
+                } ${isCollapsed ? 'justify-center px-2' : 'px-3 sm:px-4'}`}
               >
                 <Icon size={20} />
                 {!isCollapsed && <span className="font-medium">{item.label}</span>}
@@ -97,6 +97,7 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
           })}
         </nav>
 
+        <div className="pt-4 sm:pt-6 border-t border-sidebar-border mt-auto flex items-center justify-between flex-shrink-0">
           <Button
             className={`w-full justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white`}
             onClick={handleLogout}

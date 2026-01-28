@@ -101,6 +101,10 @@ export interface Payout {
 let provider: ethers.BrowserProvider | null = null;
 let signer: ethers.Signer | null = null;
 
+export function isProviderInitialized(): boolean {
+  return !!provider;
+}
+
 /**
  * Initialize ethers.js provider and signer with MetaMask
  */

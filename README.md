@@ -1,77 +1,126 @@
-# Decentralised Chama
+<div align="center">
+  <img src="public/logo.png" alt="Decentralized Chama Logo">
 
-DChama is a decentralized financial platform that digitizes traditional Kenyan informal savings groups (Chamas) by using blockchain smart contracts to automate contributions, secure rotating payouts, and provide immutable, transparent record-keeping for all members.
+# Decentralized Chama (DChama)
 
-_Automatically synced with your [v0.app](https://v0.app) deployments_
+**Digitizing Trust. Automating Prosperity.**
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/eugene-gabriel/v0-decentralized-chama-krnl)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/pc6H6iq7A5W)
+[![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Solidity](https://img.shields.io/badge/Solidity-Smart_Contracts-363636?style=for-the-badge&logo=solidity&logoColor=white)](https://soliditylang.org/)
+[![Hedera](https://img.shields.io/badge/Hedera-Testnet-222222?style=for-the-badge&logo=hedera&logoColor=white)](https://hedera.com/)
+[![KRNL](https://img.shields.io/badge/KRNL-Orchestration-121212?style=for-the-badge&logo=squarespace&logoColor=white)](https://krnl.app/)
+
+  <p align="center">
+    <a href="#overview">Overview</a> •
+    <a href="#key-features">Key Features</a> •
+    <a href="#tech-stack">Tech Stack</a> •
+    <a href="#getting-started">Getting Started</a> •
+    <a href="#architecture">Architecture</a>
+  </p>
+</div>
+
+---
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+**Decentralized Chama (DChama)** is a modern financial platform that brings traditional Rotating Savings and Credit Associations (<strong>ROSCAs</strong>) onto the blockchain. By leveraging smart contracts and real-time data synchronization, DChama automates the "Merry-Go-Round" cycle—ensuring transparency, security, and trustless execution for all members.
 
-## Deployment
+DChama solves the classic problems of informal groups:
 
-Your project is live at:
+- **Trust**: Funds are held in a non-custodial smart contract vault.
+- **Transparency**: Every contribution and payout is recorded on-chain.
+- **Automation**: KRNL orchestration ensures payouts happen strictly according to schedule.
 
-**[https://vercel.com/eugene-gabriel/v0-decentralized-chama-krnl](https://vercel.com/eugene-gabriel/v0-decentralized-chama-krnl)**
+## Key Features
 
-## Build your app
+- 🏦 **Smart Vaults**: Funds are secured in the `ChamaCore` contract, not a personal bank account.
+- 🔄 **Automated Payouts**: The `ChamaKernel` orchestrates rotating payouts, verifying solvency before execution.
+- 📊 **Real-Time Dashboard**: A responsive UI powered by Supabase for instant feedback, synchronized with on-chain data.
+- 👛 **Wallet Integration**: Seamless connection with MetaMask (and compatible wallets) for HBAR/ROSE transactions.
+- 📱 **Mobile First**: Fully responsive design optimized for on-the-go management.
+- 🛡️ **Dual-Write Architecture**: immediate UI updates coupled with immutable blockchain verification.
 
-Continue building your app on:
+## Tech Stack
 
-**[https://v0.app/chat/pc6H6iq7A5W](https://v0.app/chat/pc6H6iq7A5W)**
+### Frontend
 
-## How It Works
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Backend & Data
 
-## Technical Overview
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **Authentication**: Supabase Auth (Email/Password)
+- **Indexing**: Custom "Dual Write" logic (Frontend → Chain → DB)
 
-### 1. DChama Platform Overview
+### Blockchain
 
-DChama is a web-based dApp that allows users to form or join ROSCAs (Rotating Savings and Credit Associations). It automates the "Merry-Go-Round" cycle where members contribute a fixed monthly amount, and the pool is disbursed to one member each month in a predetermined rotation.
+- **Contracts**: Solidity (`foundry`)
+- **Networks**: Hedera Testnet, Oasis Sapphire Testnet
+- **Orchestration**: KRNL (Kernel) Protocol
+- **Interaction**: [Ethers.js v6](https://docs.ethers.org/v6/)
 
-#### User Journey
+## Getting Started
 
-- **Creation:** A group leader creates a DChama, sets the contribution (e.g., 1,000 KES eq), and invites 9 other members.
-- **Contribution:** Every 30 days, members deposit their funds into the ChamaCore vault.
-- **Orchestration:** The KRNL Kernel verifies that all deposits are present.
-- **Payout:** KRNL triggers the automated payout to the next member in the rotation.
+### Prerequisites
 
-### 2. Technical Architecture
+- Node.js 18+
+- npm / pnpm
+- MetaMask installed
 
-The platform is split into three layers to balance security, automation, and privacy.
+### Installation
 
-- **Execution Layer (Hedera/Solidity):** The `ChamaCore.sol` contract manages the vault and membership.
-- **Orchestration Layer (KRNL):** The `ChamaKernel.sol` manages time-based triggers and ensures business logic (e.g., "did everyone pay?") is verified before any transaction.
-- **Privacy Layer (KRNL Token Authority):** Keeps the mapping of "Wallet Address to Real Name" private, only revealing it to group members.
+1.  **Clone the repository**
 
-### 3. Smart Contract Security Rules
+    ```bash
+    git clone https://github.com/eugene-gabriel/decentralized-chama.git
+    cd decentralized-chama
+    ```
 
-To protect the treasury from hacks and internal bad actors, DChama implements the following security protocols:
+2.  **Install dependencies**
 
-#### A. The "Checks-Effects-Interactions" Pattern
+    ```bash
+    npm install
+    # or
+    pnpm install
+    ```
 
-- **Rule:** The contract must update the "payout status" for a member before actually sending the funds.
-- **Why:** Prevents Reentrancy Attacks, where a malicious contract could try to drain the pool by calling the withdrawal function multiple times before the balance is updated.
+3.  **Environment Setup**
+    Create a `.env` file in the root directory:
 
-#### B. KRNL-Only Access Control
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
+    NEXT_PUBLIC_CHAMA_CONTRACT_ADDRESS=your_contract_address
+    NEXT_PUBLIC_NETWORK=OASIS_SAPPHIRE
+    ```
 
-- **Rule:** The `executePayout()` function must be restricted to the KRNL Kernel address using a custom modifier.
-- **Why:** Ensures that no individual—not even the group creator—can manually trigger a payout to themselves out of turn.
+4.  **Run Development Server**
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-#### C. Integer Overflow Protection (Solidity 0.8+)
+## Architecture
 
-- **Rule:** Use Solidity version `^0.8.0` for all arithmetic.
-- **Why:** Automatically reverts transactions if a calculation would result in an overflow or underflow, preventing "fake balance" exploits.
+### 1. Smart Contracts
 
-#### D. The "Pull" over "Push" Payment Pattern
+The core logic resides in two contracts:
 
-- **Rule:** Instead of the contract automatically pushing funds to a winner's wallet (which could fail and freeze the contract), the contract marks funds as "Available for Claim."
-- **Why:** Protects the cycle from being stalled if a member’s wallet is blacklisted or incompatible with the payout.
+- **`ChamaCore.sol`**: The Vault. Stores funds, manages member registry, and tracks rounds.
+- **`ChamaKernel.sol`**: The Brain. Validates off-chain logic (via KRNL) and authorizes `ChamaCore` to release funds.
+
+### 2. Data Flow
+
+To ensure a snappy UX without waiting for block confirmations for every read:
+
+1.  **Read**: The UI fetches displayed data (Dashboard stats, Member lists) primarily from **Supabase**.
+2.  **Write**: Critical actions (Contribute, Payout) are executed on the **Blockchain**.
+3.  **Sync**: Successful on-chain transactions trigger updates to Supabase, keeping the two states in sync.
+
+## License
+
+This project is licensed under the MIT License.

@@ -1,65 +1,56 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Clock, TrendingDown } from 'lucide-react';
-
-const payouts = [
-  {
-    id: 1,
-    recipient: 'John Smith',
-    amount: '$1,200',
-    date: '2024-02-20',
-    status: 'completed',
-    round: 1,
-  },
-  {
-    id: 2,
-    recipient: 'Sarah Johnson',
-    amount: '$1,200',
-    date: '2024-02-20',
-    status: 'completed',
-    round: 1,
-  },
-  {
-    id: 3,
-    recipient: 'Michael Chen',
-    amount: '$1,200',
-    date: '2024-02-20',
-    status: 'completed',
-    round: 1,
-  },
-  {
-    id: 4,
-    recipient: 'Emily Davis',
-    amount: '$1,200',
-    date: '2024-03-20',
-    status: 'pending',
-    round: 2,
-  },
-  {
-    id: 5,
-    recipient: 'James Wilson',
-    amount: '$1,200',
-    date: '2024-03-20',
-    status: 'pending',
-    round: 2,
-  },
-  {
-    id: 6,
-    recipient: 'Lisa Martinez',
-    amount: '$1,200',
-    date: '2024-03-20',
-    status: 'pending',
-    round: 2,
-  },
-];
+import { Check, Clock, TrendingDown, Loader2 } from 'lucide-react';
+import { useWallet } from '@/hooks/use-wallet';
+import { createClient } from '@/lib/supabase/client';
+import { useState, useEffect } from 'react';
+import { useChamaGroup } from '@/hooks/use-chama-group';
 
 export function PayoutsPage() {
-  const completedPayouts = payouts.filter((p) => p.status === 'completed').length;
-  const totalPayouts = payouts.reduce((sum, p) => sum + parseInt(p.amount.replace('$', '')), 0);
-  const nextPayoutDate = payouts.find((p) => p.status === 'pending')?.date || 'N/A';
+  const { address, isConnected } = useWallet();
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
+  const [loadingGroups, setLoadingGroups] = useState(false);
+
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+        if (!address) return;
+        setLoadingGroups(true);
+        const supabase = createClient();
+        
+        const { data: memberRecords } = await supabase
+            .from('members')
+            .select('group_id')
+            .eq('address', address) // Ensure address case matches DB
+            .eq('status', 'active');
+        
+        if (memberRecords && memberRecords.length > 0) {
+            setActiveGroupId(memberRecords[0].group_id);
+        }
+        setLoadingGroups(false);
+    };
+
+    if (isConnected && address) {
+        fetchUserGroups();
+    }
+  }, [address, isConnected]);
+
+  const { payouts, group, isLoading } = useChamaGroup(activeGroupId || '');
+
+  // Since we only have 'amount', 'recipient', 'timestamp' from hook/contract currently
+  const completedPayouts = payouts.length; 
+  const totalPayouts = payouts.reduce((sum, p) => sum + (Number(p.amount)/1e18), 0);
+  // Next payout logic would require group cycle info
+  const nextPayoutDate = group ? new Date(Date.now() + (group.payoutCycle * 1000)).toLocaleDateString() : '---';
+
+  if (loadingGroups || (activeGroupId && isLoading)) {
+     return <div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>;
+  }
+
+  if (!activeGroupId && !loadingGroups && isConnected) {
+      return <div className="p-8 text-center text-muted-foreground">No active group found. Join a group to see payouts.</div>;
+  }
 
   return (
     <div className="flex-1">
@@ -74,40 +65,25 @@ export function PayoutsPage() {
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Paid Out</p>
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">${totalPayouts}</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">{totalPayouts.toFixed(2)} HBAR</h3>
             <p className="text-xs text-muted-foreground mt-2">{completedPayouts} completed payouts</p>
           </Card>
           <Card className="p-4 sm:p-6 bg-card border-border">
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Next Payout Round</p>
-            <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400">2</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Next Payout</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400">---</h3>
             <p className="text-xs text-muted-foreground mt-2">Due: {nextPayoutDate}</p>
           </Card>
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Payout Amount</p>
-            <h3 className="text-2xl sm:text-3xl font-bold text-blue-400">$1,200</h3>
-            <p className="text-xs text-muted-foreground mt-2">Per member per round</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-blue-400">
+                {group ? (Number(group.contributionAmount) * Number(group.totalMembers) / 1e18).toFixed(0) : '---'} HBAR
+            </h3>
+            <p className="text-xs text-muted-foreground mt-2">Estimated per round</p>
           </Card>
-           <Card className="p-4 sm:p-6 bg-card border-border">
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Pending Payouts</p>
-            <h3 className="text-2xl sm:text-3xl font-bold text-orange-400">{payouts.length - completedPayouts}</h3>
-             <p className="text-xs text-muted-foreground mt-2">Awaiting completion</p>
-          </Card>
+           {/* Removed Pending Payouts card as we don't calculate them yet */}
         </div>
 
-        {/* Upcoming Payout Alert */}
-        <Card className="p-4 sm:p-6 bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 mb-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1">Round 2 Payout In Progress</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                6 members awaiting payout. Estimated completion: March 20, 2024
-              </p>
-            </div>
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto flex-shrink-0">
-              View Details
-            </Button>
-          </div>
-        </Card>
+        {/* Removed 'Upcoming Payout Alert' as it was hardcoded */}
 
         {/* Payouts Table - Desktop */}
         <div className="hidden sm:block">
@@ -119,14 +95,13 @@ export function PayoutsPage() {
                     <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground">Recipient</th>
                     <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground">Amount</th>
                     <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground">Date</th>
-                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground">Round</th>
                     <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-foreground">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {payouts.map((payout, idx) => (
                     <tr
-                      key={payout.id}
+                      key={payout.timestamp + idx}
                       className={`border-b border-border last:border-b-0 hover:bg-card/50 transition-colors ${idx % 2 === 0 ? 'bg-card' : 'bg-card/30'}`}
                     >
                       <td className="px-4 sm:px-6 py-3 sm:py-4">
@@ -135,28 +110,25 @@ export function PayoutsPage() {
                       <td className="px-4 sm:px-6 py-3 sm:py-4">
                         <p className="font-semibold text-primary flex items-center gap-2 text-sm">
                           <TrendingDown size={16} />
-                          {payout.amount}
+                          {Number(payout.amount)/1e18} HBAR
                         </p>
                       </td>
-                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-muted-foreground">{payout.date}</td>
-                      <td className="px-4 sm:px-6 py-3 sm:py-4">
-                        <Badge className="bg-muted text-foreground border-0 text-xs">Round {payout.round}</Badge>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-muted-foreground">
+                          {new Date(payout.timestamp * 1000).toLocaleDateString()}
                       </td>
                       <td className="px-4 sm:px-6 py-3 sm:py-4">
-                        {payout.status === 'completed' ? (
                           <Badge className="bg-green-500/20 text-green-400 border-0 gap-1 flex w-fit text-xs">
                             <Check size={14} />
                             Completed
                           </Badge>
-                        ) : (
-                          <Badge className="bg-yellow-500/20 text-yellow-400 border-0 gap-1 flex w-fit text-xs">
-                            <Clock size={14} />
-                            Pending
-                          </Badge>
-                        )}
                       </td>
                     </tr>
                   ))}
+                  {payouts.length === 0 && (
+                      <tr>
+                          <td colSpan={4} className="p-8 text-center text-muted-foreground">No payouts yet.</td>
+                      </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -165,86 +137,35 @@ export function PayoutsPage() {
 
         {/* Mobile Card View */}
         <div className="sm:hidden space-y-3">
-          {payouts.map((payout) => (
-            <Card key={payout.id} className="p-4 bg-card border-border">
+          {payouts.map((payout, idx) => (
+            <Card key={payout.timestamp + idx} className="p-4 bg-card border-border">
               <div className="space-y-2">
                 <div className="flex justify-between items-start">
                   <p className="font-semibold text-foreground text-sm">{payout.recipient}</p>
-                  {payout.status === 'completed' ? (
                     <Badge className="bg-green-500/20 text-green-400 border-0 gap-1 flex w-fit text-xs">
                       <Check size={12} />
                       Completed
                     </Badge>
-                  ) : (
-                    <Badge className="bg-yellow-500/20 text-yellow-400 border-0 gap-1 flex w-fit text-xs">
-                      <Clock size={12} />
-                      Pending
-                    </Badge>
-                  )}
                 </div>
                 <div className="flex justify-between items-center pt-2 border-t border-border">
                   <div>
                     <p className="text-xs text-muted-foreground">Amount</p>
                     <p className="font-semibold text-primary flex items-center gap-1 text-sm">
                       <TrendingDown size={14} />
-                      {payout.amount}
+                      {Number(payout.amount)/1e18} HBAR
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Round {payout.round}</p>
-                    <p className="text-xs text-foreground">{payout.date}</p>
+                    <p className="text-xs text-muted-foreground">Date</p>
+                    <p className="text-xs text-foreground">{new Date(payout.timestamp * 1000).toLocaleDateString()}</p>
                   </div>
                 </div>
               </div>
             </Card>
           ))}
-        </div>
-
-        {/* Payout History Info */}
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <Card className="p-4 sm:p-6 bg-card border-border">
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Completed Rounds</h3>
-            <div className="space-y-3">
-              {[
-                { round: 1, date: 'Feb 2024', total: '$7,200' },
-              ].map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center pb-3 border-b border-border last:border-b-0">
-                  <div>
-                    <p className="font-medium text-foreground text-sm">Round {item.round}</p>
-                    <p className="text-xs text-muted-foreground">{item.date}</p>
-                  </div>
-                  <p className="text-base sm:text-lg font-bold text-green-400">{item.total}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          <Card className="p-4 sm:p-6 bg-card border-border">
-            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4">Payout Schedule</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-foreground">Every 30 days</p>
-                  <p className="text-xs text-muted-foreground">Standard rotation period</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-foreground">One member per cycle</p>
-                  <p className="text-xs text-muted-foreground">Based on group size (12 members)</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-foreground">Treasury funds</p>
-                  <p className="text-xs text-muted-foreground">From collective contributions</p>
-                </div>
-              </div>
-            </div>
-          </Card>
+          {payouts.length === 0 && (
+              <p className="text-center text-muted-foreground py-8">No payouts yet.</p>
+          )}
         </div>
       </div>
     </div>

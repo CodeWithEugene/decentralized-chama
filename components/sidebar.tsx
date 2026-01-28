@@ -1,7 +1,8 @@
 'use client';
 
-import { ThemeToggle } from './theme-toggle';
+// Imports updated to remove ThemeToggle
 import { Home, Users, TrendingUp, Send, LogOut, Menu, X, ChevronLeft } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
@@ -63,9 +64,16 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         } ${isCollapsed ? 'w-20 p-4' : 'w-64 p-6'} z-40`}
       >
-        <div className="flex items-center justify-center">
-          {!isCollapsed && <img src="/logo.png" alt="Chama Logo" className="h-8 w-auto" />}
-          {isCollapsed && <img src="/icon.png" alt="Chama Icon" className="h-8 w-8" />}
+        <div className="relative flex items-center justify-center h-16 my-4">
+          {!isCollapsed ? (
+            <div className="relative h-12 w-40">
+                <Image src="/logo.png" alt="Chama Logo" fill className="object-contain" priority />
+            </div>
+          ) : (
+            <div className="relative h-10 w-10">
+                 <Image src="/icon.png" alt="Chama Icon" fill className="object-contain" priority />
+            </div>
+          )}
         </div>
         
         <nav className="flex-1 space-y-2 mt-8">
@@ -89,16 +97,14 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
           })}
         </nav>
 
-        <div className="pt-6 border-t border-sidebar-border mt-auto flex items-center justify-between">
           <Button
-            variant="ghost"
-            className={`w-full justify-start gap-2 text-destructive hover:text-destructive/90 hover:bg-destructive/10 ${isCollapsed ? 'justify-center' : ''}`}
+            className={`w-full justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white`}
             onClick={handleLogout}
           >
             <LogOut size={18} />
             {!isCollapsed && 'Logout'}
           </Button>
-          <ThemeToggle />
+          {/* ThemeToggle removed as requested */}
         </div>
       </aside>
     </>

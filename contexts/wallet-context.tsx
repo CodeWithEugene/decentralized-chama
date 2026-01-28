@@ -32,20 +32,33 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeWallet = async () => {
       try {
-        const address = await walletService.getConnectedAddress();
-        if (address) {
-          const balance = await walletService.getBalance(address);
-          setState({
-            address,
-            isConnected: true,
-            isConnecting: false,
-            balance,
-            error: null,
-          });
+        // Import dynamically to avoid SSR issues
+        const { initializeProvider } = await import('@/lib/contract');
+        
+        // Try to initialize provider first (if wallet is available)
+        if (typeof window !== 'undefined' && window.ethereum) {
+             await initializeProvider();
+             
+             const address = await walletService.getConnectedAddress();
+             if (address) {
+               const balance = await walletService.getBalance(address);
+               setState({
+                 address,
+                 isConnected: true,
+                 isConnecting: false,
+                 balance,
+                 error: null,
+               });
+             }
         }
       } catch (error) {
         console.error('Failed to initialize wallet:', error);
+        // Explicitly catch provider not initialized to avoid noise
+        if (error instanceof Error && error.message.includes('Provider not initialized')) {
+            return;
+        }
       }
+
     };
 
     initializeWallet();

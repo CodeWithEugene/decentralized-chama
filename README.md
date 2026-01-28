@@ -33,10 +33,27 @@ DChama solves the classic problems of informal groups:
 - **Transparency**: Every contribution and payout is recorded on-chain.
 - **Automation**: KRNL orchestration ensures payouts happen strictly according to schedule.
 
+## How It Works
+
+DChama simplifies the traditional Chama experience into a digial, automated flow. Here is how a user interacts with the platform:
+
+1.  **Connect Wallet**: Users connect their digital wallet (like MetaMask) to the app. This wallet acts as their identity and bank account.
+2.  **Create or Join**: A user can create a new Chama group (setting the contribution amount and cycle) or join an existing one using a Group ID.
+3.  **Contribute**: Members contribute funds (ROSE or HBAR) directly to the smart contract vault. These funds are locked and safe.
+4.  **Rotate & Receive**: Based on the predetermined schedule, the system automatically enables the next member in line to receive the pooled funds.
+5.  **Track**: Everything is visible on the dashboard—who paid, who owes, and whose turn it is next.
+
+## Supported Tokens
+
+Understanding the currency of the platform:
+
+- **ROSE (Oasis Network)**: The native token of the Oasis Sapphire blockchain. It is used to pay for transaction fees (gas) and is the currency used for contributions and payouts within the Chama when running on Oasis. Sapphire adds a layer of privacy to these transactions.
+- **HBAR (Hedera)**: The native token of the Hedera network. Known for its high speed and low fixed fees, HBAR is used for contributions when the platform is deployed on Hedera.
+
 ## Key Features
 
 - 🏦 **Smart Vaults**: Funds are secured in the `ChamaCore` contract, not a personal bank account.
-- 🔄 **Automated Payouts**: The `ChamaKernel` orchestrates rotating payouts, verifying solvency before execution.
+- 🔄 **Automated Payouts with KRNL**: The `ChamaKernel` uses the **KRNL Protocol** to orchestrate rotating payouts. It imposes checks (like solvency and time verification) off-chain before authorizing the on-chain release of funds, ensuring the rotation is tamper-proof.
 - 📊 **Real-Time Dashboard**: A responsive UI powered by Supabase for instant feedback, synchronized with on-chain data.
 - 👛 **Wallet Integration**: Seamless connection with MetaMask (and compatible wallets) for HBAR/ROSE transactions.
 - 📱 **Mobile First**: Fully responsive design optimized for on-the-go management.

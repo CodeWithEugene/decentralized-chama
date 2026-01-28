@@ -8,6 +8,8 @@ import { useWallet } from '@/hooks/use-wallet';
 import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
 import { useChamaGroup } from '@/hooks/use-chama-group';
+import { ContributeDialog } from '@/components/chama-actions';
+import { ethers } from 'ethers';
 
 export function ContributionsPage() {
   const { address, isConnected } = useWallet();
@@ -24,7 +26,7 @@ export function ContributionsPage() {
         const { data: memberRecords } = await supabase
             .from('members')
             .select('group_id')
-            .eq('address', address)
+            .eq('address', address.toLowerCase())
             .eq('status', 'active');
         
         if (memberRecords && memberRecords.length > 0) {
@@ -38,7 +40,9 @@ export function ContributionsPage() {
     }
   }, [address, isConnected]);
 
-  const { contributions, isLoading } = useChamaGroup(activeGroupId || '');
+  const { group, contributions, isLoading } = useChamaGroup(activeGroupId || '');
+
+  const tokenSymbol = process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE');
 
   const totalContributions = contributions.length;
   // TODO: Add 'status' to contribution interface or assume all are confirmed if on-chain
@@ -62,17 +66,19 @@ export function ContributionsPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Contributions</h1>
             <p className="text-sm sm:text-base text-muted-foreground">Track all member contributions to the group.</p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full sm:w-auto">
-            <ArrowUp size={18} />
-            Make Contribution
-          </Button>
+          {activeGroupId && group && (
+            <ContributeDialog 
+                groupId={activeGroupId} 
+                contributionAmount={group.contributionAmount} 
+            />
+          )}
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
           <Card className="p-4 sm:p-6 bg-card border-border">
             <p className="text-xs sm:text-sm text-muted-foreground mb-2">Total Contributions</p>
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">{totalAmount.toFixed(2)} HBAR</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground">{totalAmount.toFixed(2)} {tokenSymbol}</h3>
             <p className="text-xs text-muted-foreground mt-2">{totalContributions} transactions</p>
           </Card>
           <Card className="p-4 sm:p-6 bg-card border-border">
@@ -107,7 +113,7 @@ export function ContributionsPage() {
                         <p className="font-medium text-foreground text-sm">{contrib.member}</p>
                       </td>
                       <td className="px-4 sm:px-6 py-3 sm:py-4">
-                        <p className="font-semibold text-primary text-sm">{Number(contrib.amount)/1e18} HBAR</p>
+                        <p className="font-semibold text-primary text-sm">{Number(contrib.amount)/1e18} {tokenSymbol}</p>
                       </td>
                       <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-muted-foreground">
                           {new Date(contrib.timestamp * 1000).toLocaleDateString()}
@@ -146,7 +152,7 @@ export function ContributionsPage() {
                 <div className="flex justify-between items-center pt-2 border-t border-border">
                   <div>
                     <p className="text-xs text-muted-foreground">Amount</p>
-                    <p className="font-semibold text-primary">{Number(contrib.amount)/1e18} HBAR</p>
+                    <p className="font-semibold text-primary">{Number(contrib.amount)/1e18} {tokenSymbol}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-muted-foreground">Date</p>

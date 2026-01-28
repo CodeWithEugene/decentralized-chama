@@ -8,6 +8,7 @@ import { useWallet } from '@/hooks/use-wallet';
 import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
 import { useChamaGroup } from '@/hooks/use-chama-group';
+import { AddMemberDialog } from '@/components/chama-actions';
 
 export function MembersPage() {
   const { address, isConnected } = useWallet();
@@ -24,7 +25,7 @@ export function MembersPage() {
         const { data: memberRecords } = await supabase
             .from('members')
             .select('group_id')
-            .eq('address', address)
+            .eq('address', address.toLowerCase())
             .eq('status', 'active');
         
         if (memberRecords && memberRecords.length > 0) {
@@ -70,10 +71,7 @@ export function MembersPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Members</h1>
             <p className="text-sm sm:text-base text-muted-foreground">Manage group members and their contributions.</p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full sm:w-auto">
-            <Plus size={18} />
-            Add Member
-          </Button>
+          {activeGroupId && <AddMemberDialog groupId={activeGroupId} />}
         </div>
 
         {/* Stats */}

@@ -38,7 +38,7 @@ export function TopBar({ onToggleSidebar, isSidebarCollapsed }: TopBarProps) {
   const [mounted, setMounted] = useState(false);
   const supabase = createClient();
   const router = useRouter();
-  const { address, connect, isConnected, disconnect } = useWallet();
+  const { address, connect, isConnected, disconnect, error } = useWallet();
   const [userProfile, setUserProfile] = useState<{ email: string | null }>({ email: null });
 
   useEffect(() => {
@@ -136,15 +136,31 @@ export function TopBar({ onToggleSidebar, isSidebarCollapsed }: TopBarProps) {
 
         {/* Wallet / User */}
         <div className="flex items-center gap-2 pl-2 border-l border-border">
+          {error && <div className="text-xs text-red-500 mr-2 border border-red-500/50 px-2 py-0.5 rounded capitalize">{error}</div>}
           {isConnected ? (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="hidden sm:flex gap-2 mr-2"
-              >
-                <Wallet size={16} />
-                <span>{truncateAddress(address!)}</span>
-              </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="hidden sm:flex gap-2 mr-2"
+                >
+                  <Wallet size={16} />
+                  <span>{truncateAddress(address!)}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Wallet connected</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => disconnect()}
+                  className="text-red-500 hover:text-red-600 focus:text-red-600 focus:bg-red-500/10 cursor-pointer"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Disconnect Wallet</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
              <Button 
                 variant="outline" 

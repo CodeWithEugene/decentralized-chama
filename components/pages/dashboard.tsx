@@ -4,11 +4,12 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, Zap, Wallet, Loader2 } from 'lucide-react';
 import { SimpleLineChart } from '@/components/charts/line-chart';
-import { CreateChamaDialog, JoinChamaDialog } from '@/components/chama-actions';
+import { CreateChamaDialog, JoinChamaDialog, ContributeDialog } from '@/components/chama-actions';
 import { useWallet } from '@/hooks/use-wallet';
 import { useChamaGroup } from '@/hooks/use-chama-group';
 import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 
 export function DashboardPage() {
   const { address, isConnected, connect } = useWallet();
@@ -43,17 +44,19 @@ export function DashboardPage() {
 
   const { group, members, contributions, payouts, isLoading: isGroupLoading } = useChamaGroup(activeGroupId || '');
 
+  const tokenSymbol = process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE');
+  
   const stats = [
     {
       label: 'Total Balance',
-      value: group ? `${Number(group.treasuryBalance) / 1e18} HBAR` : '---', // Assuming 18 decimals
+      value: group ? `${Number(group.treasuryBalance) / 1e18} ${tokenSymbol}` : '---', // Assuming 18 decimals
       subtext: 'Group Treasury',
       icon: Wallet,
       color: 'text-purple-400',
     },
     {
       label: 'Contribution Amount',
-      value: group ? `${Number(group.contributionAmount) / 1e18} HBAR` : '---',
+      value: group ? `${Number(group.contributionAmount) / 1e18} ${tokenSymbol}` : '---',
       subtext: 'Per member/cycle',
       icon: TrendingUp,
       color: 'text-blue-400',
@@ -73,14 +76,6 @@ export function DashboardPage() {
       color: 'text-yellow-400',
     },
   ];
-
-  const tokenSymbol = process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE');
-  
-  // Update stats with dynamic symbol
-  if (group) {
-      stats[0].value = `${Number(group.treasuryBalance) / 1e18} ${tokenSymbol}`;
-      stats[1].value = `${Number(group.contributionAmount) / 1e18} ${tokenSymbol}`;
-  }
 
   if (loadingGroups || (activeGroupId && isGroupLoading)) {
       return (
@@ -152,8 +147,15 @@ export function DashboardPage() {
           <Card className="lg:col-span-2 p-4 sm:p-6 bg-card border-border flex flex-col">
             <h2 className="text-base sm:text-lg font-bold text-foreground mb-4">Contribution History</h2>
             <div className="w-full flex-grow">
-              <SimpleLineChart /> 
-              {/* NOTE: Chart still uses internal dummy data, needs refactor but out of scope for strict 'remove dummy text' unless requested */}
+              <SimpleLineChart data={
+                  contributions
+                  .slice(0, 7) // Last 7 contributions
+                  .reverse() // Chronological order
+                  .map((c, i) => ({
+                      name: new Date(c.timestamp * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+                      value: Number(c.amount) / 1e18
+                  }))
+              } /> 
             </div>
           </Card>
 
@@ -195,9 +197,12 @@ export function DashboardPage() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
-            Make Contribution
-          </Button>
+          {activeGroupId && group && (
+            <ContributeDialog 
+                groupId={activeGroupId} 
+                contributionAmount={group.contributionAmount} 
+            />
+          )}
           <CreateChamaDialog />
           <JoinChamaDialog />
         </div>

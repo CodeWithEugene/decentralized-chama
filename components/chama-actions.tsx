@@ -13,9 +13,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useChamaFactory } from '@/hooks/use-chama-factory';
-import { Plus, Users } from 'lucide-react';
+import { Plus, Users, Wallet } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useChamaGroup } from '@/hooks/use-chama-group';
+import { useChamaFactory } from '@/hooks/use-chama-factory';
 
 export function CreateChamaDialog() {
   const [open, setOpen] = useState(false);
@@ -185,6 +186,131 @@ export function JoinChamaDialog() {
           <DialogFooter>
             <Button type="submit" disabled={isJoining}>
               {isJoining ? 'Joining...' : 'Join Group'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+export function ContributeDialog({ groupId, contributionAmount }: { groupId: string, contributionAmount: string }) {
+  const [open, setOpen] = useState(false);
+  const { contribute, isLoading } = useChamaGroup(groupId);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    try {
+      await contribute(contributionAmount);
+      setOpen(false);
+      window.location.reload();
+    } catch (err) {
+      console.error('Contribution failed:', err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const tokenSymbol = process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE');
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto gap-2">
+            <Wallet className="w-4 h-4" /> Make Contribution
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Make a Contribution</DialogTitle>
+          <DialogDescription>
+            Contribute to your Chama savings pool.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-6 text-center">
+            <p className="text-sm text-muted-foreground mb-1">Standard Contribution</p>
+            <p className="text-3xl font-bold text-foreground">
+                {contributionAmount} {tokenSymbol}
+            </p>
+        </div>
+        <DialogFooter>
+          <Button onClick={handleSubmit} className="w-full" disabled={isProcessing || isLoading}>
+            {isProcessing ? 'Processing...' : 'Confirm Contribution'}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function AddMemberDialog({ groupId }: { groupId: string }) {
+  const [open, setOpen] = useState(false);
+  const { addMember, isLoading } = useChamaGroup(groupId);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [formData, setFormData] = useState({
+    address: '',
+    name: '',
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    try {
+      await addMember(formData.address, formData.name);
+      setOpen(false);
+      window.location.reload();
+    } catch (err) {
+      console.error('Failed to add member:', err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 w-full sm:w-auto">
+          <Plus className="w-4 h-4" /> Add Member
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add New Member</DialogTitle>
+          <DialogDescription>
+            Invite a new member to join your Chama.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="memAddress" className="text-right">
+              Address
+            </Label>
+            <Input
+              id="memAddress"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              className="col-span-3"
+              placeholder="0x..."
+              required
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="memName" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="memName"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="col-span-3"
+              placeholder="Member Name"
+              required
+            />
+          </div>
+          <DialogFooter>
+            <Button type="submit" className="w-full" disabled={isProcessing || isLoading}>
+              {isProcessing ? 'Processing...' : 'Add Member'}
             </Button>
           </DialogFooter>
         </form>

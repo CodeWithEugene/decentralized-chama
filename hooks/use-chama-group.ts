@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { contractService, type ChamaGroup, type Member, type Contribution, type Payout } from '@/lib/contract';
 import { createClient } from '@/lib/supabase/client';
 
@@ -45,13 +46,62 @@ export function useChamaGroup(groupId: string) {
         .select('*')
         .eq('group_id', groupId);
 
+      const { data: contributionsData } = await supabase
+        .from('contributions')
+        .select('*')
+        .eq('group_id', groupId)
+        .order('created_at', { ascending: false });
+
+      const { data: payoutsData } = await supabase
+        .from('payouts')
+        .select('*')
+        .eq('group_id', groupId)
+        .order('created_at', { ascending: false });
+
       if (groupData) {
+        // Map members and calculate total contributions
+        // @ts-ignore
+        const members: Member[] = membersData?.map(m => {
+          const memberContribs = contributionsData?.filter(c => c.member_address.toLowerCase() === m.address.toLowerCase()) || [];
+          const total = memberContribs.reduce((sum, c) => sum + BigInt(c.amount), BigInt(0));
+          
+          return {
+            address: m.address,
+            name: m.name || '',
+            totalContributions: ethers.formatEther(total),
+            status: m.status as any,
+            joinDate: new Date(m.joined_at).getTime() / 1000,
+            lastContribution: m.last_contribution ? new Date(m.last_contribution).getTime() / 1000 : 0,
+          };
+        }) || [];
+
+        // Map contributions
+        const contributions: Contribution[] = contributionsData?.map(c => ({
+          id: c.id,
+          member: c.member_address,
+          amount: c.amount, // already in wei string from DB? check type
+          timestamp: new Date(c.created_at).getTime() / 1000,
+          transactionHash: c.tx_hash,
+          status: (c.status as any) || 'confirmed',
+        })) || [];
+
+        // Map payouts
+        const payouts: Payout[] = payoutsData?.map(p => ({
+          id: p.id,
+          recipient: p.recipient_address,
+          amount: p.amount,
+          round: p.round,
+          status: (p.status as any) || 'completed',
+          transactionHash: p.tx_hash,
+          timestamp: new Date(p.created_at).getTime() / 1000,
+        })) || [];
+
         // Map Supabase data to ChamaGroup interface
         const group: ChamaGroup = {
           id: groupData.id,
           name: groupData.name,
           description: groupData.description || '',
-          totalMembers: membersData?.length || 0,
+          totalMembers: members.length,
           treasuryBalance: groupData.treasury_balance ?? '0',
           contributionAmount: groupData.contribution_amount,
           payoutCycle: groupData.payout_cycle,
@@ -59,22 +109,11 @@ export function useChamaGroup(groupId: string) {
           contractAddress: groupData.id, // Assuming ID is address
         };
 
-        // Map members
-        // @ts-ignore
-        const members: Member[] = membersData?.map(m => ({
-          address: m.address,
-          name: m.name || '',
-          totalContributions: '0', // TODO: Calculate from contributions table
-          status: m.status as any,
-          joinDate: new Date(m.joined_at).getTime() / 1000,
-          lastContribution: m.last_contribution ? new Date(m.last_contribution).getTime() / 1000 : 0,
-        })) || [];
-
         setState({
           group,
           members,
-          contributions: [], // Fetch later
-          payouts: [], // Fetch later
+          contributions,
+          payouts,
           isLoading: false,
           error: null,
         });

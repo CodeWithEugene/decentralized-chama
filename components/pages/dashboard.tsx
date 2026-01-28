@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, Zap, Wallet } from 'lucide-react';
 import { SimpleLineChart } from '@/components/charts/line-chart';
+import { CreateChamaDialog, JoinChamaDialog } from '@/components/chama-actions';
 
 export function DashboardPage() {
   const stats = [
@@ -95,14 +96,14 @@ export function DashboardPage() {
           </Card>
         </div>
 
+
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
             Make Contribution
           </Button>
-          <Button variant="outline" className="border-border text-foreground hover:bg-card bg-transparent w-full sm:w-auto">
-            View Group Details
-          </Button>
+          <CreateChamaDialog />
+          <JoinChamaDialog />
         </div>
       </div>
     </div>

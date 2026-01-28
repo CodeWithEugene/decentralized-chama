@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { contractService, type ChamaGroup, type Member, type Contribution, type Payout } from '@/lib/contract';
+import { createClient } from '@/lib/supabase/client';
 
 interface GroupState {
   group: ChamaGroup | null;
@@ -26,21 +27,73 @@ export function useChamaGroup(groupId: string) {
   const loadGroup = useCallback(async () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const [group, members, contributions, payouts] = await Promise.all([
-        contractService.getGroup(groupId),
-        contractService.getMembers(groupId),
-        contractService.getContributions(groupId),
-        contractService.getPayouts(groupId),
-      ]);
+      // Fetch from Supabase for faster load, fallback to contract or sync
+      const supabase = createClient();
+      
+      const { data: groupData, error: groupError } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('id', groupId)
+        .single();
 
-      setState({
-        group,
-        members,
-        contributions,
-        payouts,
-        isLoading: false,
-        error: null,
-      });
+      const { data: membersData } = await supabase
+        .from('members')
+        .select('*')
+        .eq('group_id', groupId);
+
+      if (groupData) {
+        // Map Supabase data to ChamaGroup interface
+        const group: ChamaGroup = {
+          id: groupData.id,
+          name: groupData.name,
+          description: groupData.description || '',
+          totalMembers: membersData?.length || 0,
+          treasuryBalance: groupData.treasury_balance ?? '0',
+          contributionAmount: groupData.contribution_amount,
+          payoutCycle: groupData.payout_cycle,
+          createdAt: new Date(groupData.created_at).getTime() / 1000,
+          contractAddress: groupData.id, // Assuming ID is address
+        };
+
+        // Map members
+        // @ts-ignore
+        const members: Member[] = membersData?.map(m => ({
+          address: m.address,
+          name: m.name || '',
+          totalContributions: '0', // TODO: Calculate from contributions table
+          status: m.status as any,
+          joinDate: new Date(m.joined_at).getTime() / 1000,
+          lastContribution: m.last_contribution ? new Date(m.last_contribution).getTime() / 1000 : 0,
+        })) || [];
+
+        setState({
+          group,
+          members,
+          contributions: [], // Fetch later
+          payouts: [], // Fetch later
+          isLoading: false,
+          error: null,
+        });
+      } else {
+         // Fallback to contract if not in DB (or valid group ID not found)
+         // For now, keep existing logic as fallback or just error
+         // Keeping existing logic for now as fallback
+          const [group, members, contributions, payouts] = await Promise.all([
+            contractService.getGroup(groupId),
+            contractService.getMembers(groupId),
+            contractService.getContributions(groupId),
+            contractService.getPayouts(groupId),
+          ]);
+    
+          setState({
+            group,
+            members,
+            contributions,
+            payouts,
+            isLoading: false,
+            error: null,
+          });
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to load group data';
       setState((prev) => ({

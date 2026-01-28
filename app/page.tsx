@@ -21,9 +21,9 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background dark:bg-black flex flex-col">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background z-50">
+      <nav className="fixed top-0 w-full bg-background dark:bg-black z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <img src="/logo.png" alt="Chama Logo" className="h-12 sm:h-16 w-auto" />
@@ -43,7 +43,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <main className="flex-1 bg-background text-foreground">
+      <main className="flex-1 bg-background dark:bg-black text-foreground">
         {/* Hero Section */}
       <section className="pt-40 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center space-y-8">
@@ -73,11 +73,12 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-card/30 dark:bg-black">
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
 <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
+              <Users className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Chama Management</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Create and manage savings groups with transparent member tracking and role management.
@@ -85,6 +86,7 @@ export default function LandingPage() {
             </div>
 
             <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
+              <TrendingUp className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Track Contributions</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Monitor all contributions in real-time with blockchain-verified transaction records.
@@ -92,6 +94,7 @@ export default function LandingPage() {
             </div>
 
             <div className="p-6 rounded-lg border border-border bg-background/50 dark:bg-black hover:bg-primary hover:text-white transition-colors group">
+              <Zap className="w-8 h-8 text-primary mb-4 group-hover:text-white" />
               <h3 className="font-semibold text-lg mb-2">Automated Payouts</h3>
               <p className="text-sm text-muted-foreground group-hover:text-white hidden sm:block">
                 Rotation-based payouts ensure every member gets their turn with smart contract automation.

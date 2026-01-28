@@ -35,6 +35,7 @@ const CHAMA_CONTRACT_ABI = [
   // Group functions
   'function getGroup(string groupId) view returns (tuple(string id, string name, string description, uint256 totalMembers, uint256 treasuryBalance, uint256 contributionAmount, uint256 payoutCycle, uint256 createdAt, address contractAddress))',
   'function getMembers(string groupId) view returns (tuple(address addr, string name, uint256 totalContributions, uint8 status, uint256 joinDate, uint256 lastContribution)[])',
+  'function createGroup(string name, string description, uint256 contributionAmount, uint256 payoutCycle) external returns (string)',
   'function addMember(string groupId, address memberAddress, string memberName) external',
   'function removeMember(string groupId, address memberAddress) external',
   
@@ -226,6 +227,32 @@ export const contractService = {
       throw new ContractError(
         `Failed to fetch members for group ${groupId}`,
         'GET_MEMBERS_FAILED'
+      );
+    }
+  },
+
+  /**
+   * Create a new group
+   */
+  async createGroup(name: string, description: string, contributionAmount: string, payoutCycle: number): Promise<string> {
+    try {
+      const contract = await getChamaContract();
+      const weiAmount = ethers.parseEther(contributionAmount);
+      
+      // Assume the contract returns the groupId or emits an event we can parse. 
+      // For now, we'll return the transaction hash.
+      const tx = await contract.createGroup(name, description, weiAmount, payoutCycle);
+      console.log('[v0] Create group transaction:', tx.hash);
+      
+      const receipt = await tx.wait();
+      console.log('[v0] Create group confirmed:', receipt?.hash);
+      
+      return tx.hash;
+    } catch (error) {
+      console.error('[v0] Error creating group:', error);
+      throw new ContractError(
+        'Failed to create group',
+        'CREATE_GROUP_FAILED'
       );
     }
   },

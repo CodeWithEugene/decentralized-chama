@@ -34,6 +34,7 @@ export const metadata: Metadata = {
 }
 
 import { ThemeProvider } from '@/components/theme-provider'
+import { WalletProvider } from '@/contexts/wallet-context'
 
 export default function RootLayout({
   children,
@@ -49,7 +50,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <WalletProvider>
+            {children}
+          </WalletProvider>
         </ThemeProvider>
         <Analytics />
       </body>

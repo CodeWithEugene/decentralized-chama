@@ -25,6 +25,16 @@ export function useChamaFactory() {
     async (name: string, description: string, contributionAmount: string, payoutCycle: number) => {
       setState((prev) => ({ ...prev, isCreating: true, error: null }));
       try {
+        const { NETWORKS } = await import('@/lib/contract');
+        const targetNetwork = process.env.NEXT_PUBLIC_NETWORK || 'OASIS_SAPPHIRE';
+        // @ts-ignore
+        const targetChainId = NETWORKS[targetNetwork]?.chainId;
+
+        if (targetChainId) {
+             const { walletService } = await import('@/lib/contract');
+             await walletService.switchNetwork(targetChainId);
+        }
+
         const txHash = await contractService.createGroup(name, description, contributionAmount, payoutCycle);
         
         // Mock Group ID generation (in real app, get from event logs)

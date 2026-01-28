@@ -35,11 +35,10 @@ export function useChamaFactory() {
              await walletService.switchNetwork(targetChainId);
         }
 
-        const txHash = await contractService.createGroup(name, description, contributionAmount, payoutCycle);
+        const cycleInSeconds = payoutCycle * 86400;
+        const { txHash, groupId: newGroupId } = await contractService.createGroup(name, description, contributionAmount, cycleInSeconds);
         
-        // Mock Group ID generation (in real app, get from event logs)
-        // For demo, we use a random address or hash
-        const newGroupId = process.env.NEXT_PUBLIC_NEW_GROUP_ID || `0x${Math.random().toString(16).slice(2, 42)}`;
+        console.log('[v0] Real Group ID from contract:', newGroupId);
 
         // Dual-write to Supabase
         const supabase = createClient();
@@ -58,11 +57,11 @@ export function useChamaFactory() {
         if (address) {
              const { error: memberError } = await supabase.from('members').insert({
                  group_id: newGroupId,
-                 address: address,
+                 address: address.toLowerCase(),
                  name: 'Admin', // Default name, or prompt user?
                  status: 'active',
-                 join_date: Math.floor(Date.now() / 1000),
-                 last_contribution: 0
+                 joined_at: new Date().toISOString(),
+                 last_contribution: null
              });
              if (memberError) console.error('Supabase member write failed:', memberError);
         }
@@ -102,8 +101,10 @@ export function useChamaFactory() {
         const supabase = createClient();
         const { error: dbError } = await supabase.from('members').insert({
             group_id: groupId,
-            address: address,
-            name: memberName
+            address: address.toLowerCase(),
+            name: memberName,
+            status: 'active',
+            joined_at: new Date().toISOString()
         });
 
         if (dbError) console.error('Supabase member write failed:', dbError);

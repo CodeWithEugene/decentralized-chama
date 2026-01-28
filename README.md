@@ -76,9 +76,18 @@ Understanding the currency of the platform:
 ### Blockchain
 
 - **Contracts**: Solidity (`foundry`)
-- **Networks**: Hedera Testnet, Oasis Sapphire Testnet
+- **Networks**: Sepolia Testnet (Primary), Hedera Testnet (Secondary)
 - **Orchestration**: KRNL (Kernel) Protocol
 - **Interaction**: [Ethers.js v6](https://docs.ethers.org/v6/)
+
+## Sepolia Migration Plan
+
+To support the user request to switch to Sepolia:
+
+1.  **Contract Config**: Update `lib/contract.ts` to add Sepolia chain ID (11155111) and RPC.
+2.  **Deployment**: Run `forge create` targeting Sepolia.
+3.  **Environment**: Update `.env` `NEXT_PUBLIC_NETWORK` to `SEPOLIA` and `NEXT_PUBLIC_CHAMA_CONTRACT_ADDRESS`.
+4.  **Frontend**: Update `components/chama-actions.tsx` to display "ETH" instead of "ROSE".
 
 ## Getting Started
 

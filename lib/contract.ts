@@ -11,6 +11,7 @@ import { createClient } from './supabase/client';
 // ============================================================================
 
 // Network Configuration
+// Network Configuration
 export const NETWORKS = {
   HEDERA_TESTNET: {
     chainId: 296,
@@ -21,6 +22,11 @@ export const NETWORKS = {
     chainId: 23295,
     name: 'Oasis Sapphire Testnet',
     rpcUrl: 'https://testnet.sapphire.oasis.io',
+  },
+  SEPOLIA: {
+    chainId: 11155111,
+    name: 'Sepolia Testnet',
+    rpcUrl: 'https://ethereum-sepolia.publicnode.com',
   },
 };
 
@@ -48,6 +54,7 @@ const CHAMA_CONTRACT_ABI = [
   'function getPayouts(string groupId, uint256 round) view returns (tuple(string id, address recipient, uint256 amount, uint256 round, uint8 status, string transactionHash, uint256 timestamp)[])',
   'function getCurrentRound(string groupId) view returns (uint256)',
   'function getNextPayoutRecipient(string groupId) view returns (address)',
+  'event GroupCreated(string groupId, address indexed groupAddress, string name)',
 ];
 
 // ============================================================================
@@ -238,24 +245,41 @@ export const contractService = {
   /**
    * Create a new group
    */
-  async createGroup(name: string, description: string, contributionAmount: string, payoutCycle: number): Promise<string> {
+  async createGroup(name: string, description: string, contributionAmount: string, payoutCycle: number): Promise<{ txHash: string, groupId: string }> {
     try {
       const contract = await getChamaContract();
       const weiAmount = ethers.parseEther(contributionAmount);
       
-      // Assume the contract returns the groupId or emits an event we can parse. 
-      // For now, we'll return the transaction hash.
       const tx = await contract.createGroup(name, description, weiAmount, payoutCycle);
       console.log('[v0] Create group transaction:', tx.hash);
       
       const receipt = await tx.wait();
       console.log('[v0] Create group confirmed:', receipt?.hash);
+
+      // Parse GroupCreated event
+      const event = receipt?.logs
+        .map((log: any) => {
+          try {
+            return contract.interface.parseLog(log);
+          } catch (e) {
+            return null;
+          }
+        })
+        .find((log: any) => log?.name === 'GroupCreated');
+
+      if (!event) {
+        throw new Error('GroupCreated event not found in transaction receipt');
+      }
+
+      const groupId = event.args.groupId;
+      console.log('[v0] Group created with ID:', groupId);
       
-      return tx.hash;
-    } catch (error) {
+      return { txHash: tx.hash, groupId };
+    } catch (error: any) {
       console.error('[v0] Error creating group:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
       throw new ContractError(
-        'Failed to create group',
+        `Failed to create group: ${message}`,
         'CREATE_GROUP_FAILED'
       );
     }
@@ -539,8 +563,8 @@ export const walletService = {
               chainName: network.name,
               rpcUrls: [network.rpcUrl],
               nativeCurrency: {
-                name: chainId === 296 ? 'HBAR' : 'ROSE',
-                symbol: chainId === 296 ? 'HBAR' : 'ROSE',
+                name: chainId === 296 ? 'HBAR' : (chainId === 23295 ? 'ROSE' : 'ETH'),
+                symbol: chainId === 296 ? 'HBAR' : (chainId === 23295 ? 'ROSE' : 'ETH'),
                 decimals: 18,
               },
             }],

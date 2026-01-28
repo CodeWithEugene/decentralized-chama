@@ -26,7 +26,7 @@ export function DashboardPage() {
         const { data: memberRecords } = await supabase
             .from('members')
             .select('group_id')
-            .eq('address', address) // Ensure address case matches DB
+            .eq('address', address.toLowerCase()) 
             .eq('status', 'active');
         
         if (memberRecords && memberRecords.length > 0) {
@@ -73,6 +73,14 @@ export function DashboardPage() {
       color: 'text-yellow-400',
     },
   ];
+
+  const tokenSymbol = process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE');
+  
+  // Update stats with dynamic symbol
+  if (group) {
+      stats[0].value = `${Number(group.treasuryBalance) / 1e18} ${tokenSymbol}`;
+      stats[1].value = `${Number(group.contributionAmount) / 1e18} ${tokenSymbol}`;
+  }
 
   if (loadingGroups || (activeGroupId && isGroupLoading)) {
       return (
@@ -162,7 +170,7 @@ export function DashboardPage() {
                    .slice(0, 5)
                    .map((item, idx) => {
                        const isPayout = 'recipient' in item;
-                       const amountLabel = `${Number(item.amount)/1e18} HBAR`;
+                       const amountLabel = `${Number(item.amount)/1e18} ${tokenSymbol}`;
                        return (
                         <div key={idx} className="flex justify-between items-center pb-3 border-b border-border last:border-b-0 gap-2">
                             <div className="min-w-0 flex-1">

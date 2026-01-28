@@ -39,6 +39,7 @@ check_env_var "PRIVATE_KEY"
 # Set defaults if not provided
 HEDERA_RPC_URL="${HEDERA_RPC_URL:-https://testnet.hashio.io/api}"
 OASIS_SAPPHIRE_RPC_URL="${OASIS_SAPPHIRE_RPC_URL:-https://testnet.sapphire.oasis.io}"
+SEPOLIA_RPC_URL="${SEPOLIA_RPC_URL:-https://ethereum-sepolia.publicnode.com}"
 GAS_PRICE="${GAS_PRICE:-100000000}"
 CHAIN="${CHAIN:-hedera}"  # Default to Hedera
 
@@ -194,6 +195,62 @@ deploy_to_oasis() {
     echo "NEXT_PUBLIC_NETWORK=OASIS_SAPPHIRE"
 }
 
+deploy_to_sepolia() {
+    print_header "Deploying to Sepolia Testnet"
+    
+    print_info "RPC URL: $SEPOLIA_RPC_URL"
+    
+    # Compile contracts
+    print_info "Compiling contracts..."
+    if ! forge build; then
+        print_error "Compilation failed"
+        exit 1
+    fi
+    print_success "Contracts compiled"
+    
+    # Deploy ChamaKernel
+    print_info "Deploying ChamaKernel..."
+    CHAMA_KERNEL=$(forge create contracts/ChamaKernel.sol:ChamaKernel \
+        --rpc-url $SEPOLIA_RPC_URL \
+        --private-key $PRIVATE_KEY \
+        --broadcast \
+        2>&1 | grep "Deployed to:" | awk '{print $3}')
+    
+    if [ -z "$CHAMA_KERNEL" ]; then
+        print_error "ChamaKernel deployment failed"
+        exit 1
+    fi
+    print_success "ChamaKernel deployed to: $CHAMA_KERNEL"
+
+    # Deploy ChamaFactory (The Main Contract)
+    print_info "Deploying ChamaFactory..."
+    CHAMA_FACTORY=$(forge create contracts/ChamaFactory.sol:ChamaFactory \
+        --rpc-url $SEPOLIA_RPC_URL \
+        --private-key $PRIVATE_KEY \
+        --broadcast \
+        --constructor-args $CHAMA_KERNEL \
+        2>&1 | grep "Deployed to:" | awk '{print $3}')
+    
+    if [ -z "$CHAMA_FACTORY" ]; then
+        print_error "ChamaFactory deployment failed"
+        exit 1
+    fi
+    print_success "ChamaFactory deployed to: $CHAMA_FACTORY"
+    
+    # Save deployment info
+    save_deployment_info "sepolia" "$CHAMA_FACTORY" "$CHAMA_KERNEL"
+    
+    print_header "Sepolia Deployment Complete!"
+    echo -e "${GREEN}ChamaFactory:  $CHAMA_FACTORY${NC}"
+    echo -e "${GREEN}ChamaKernel: $CHAMA_KERNEL${NC}"
+    echo -e "\n${YELLOW}Adding these to .env automatically...${NC}"
+    
+    # Update .env
+    sed -i '' "s/NEXT_PUBLIC_CHAMA_CONTRACT_ADDRESS=.*/NEXT_PUBLIC_CHAMA_CONTRACT_ADDRESS=$CHAMA_FACTORY/" .env
+    sed -i '' "s/NEXT_PUBLIC_NETWORK=.*/NEXT_PUBLIC_NETWORK=SEPOLIA/" .env
+    echo "Updated .env"
+}
+
 deploy_to_both() {
     print_header "Deploying to Both Networks"
     
@@ -246,9 +303,10 @@ show_menu() {
     echo "============================================"
     echo "1) Deploy to Hedera Testnet"
     echo "2) Deploy to Oasis Sapphire Testnet"
-    echo "3) Deploy to Both Networks"
-    echo "4) Verify Contracts"
-    echo "5) Exit"
+    echo "3) Deploy to Sepolia Testnet"
+    echo "4) Deploy to Both Networks"
+    echo "5) Verify Contracts"
+    echo "6) Exit"
     echo -e "\n${YELLOW}Select option:${NC} "
 }
 
@@ -269,6 +327,9 @@ main() {
             oasis)
                 deploy_to_oasis
                 ;;
+            sepolia)
+                deploy_to_sepolia
+                ;;
             both)
                 deploy_to_both
                 ;;
@@ -277,7 +338,7 @@ main() {
                 ;;
             *)
                 print_error "Unknown option: $1"
-                echo "Usage: ./scripts/deploy.sh [hedera|oasis|both|verify]"
+                echo "Usage: ./scripts/deploy.sh [hedera|oasis|sepolia|both|verify]"
                 exit 1
                 ;;
         esac
@@ -295,12 +356,15 @@ main() {
                     deploy_to_oasis
                     ;;
                 3)
-                    deploy_to_both
+                    deploy_to_sepolia
                     ;;
                 4)
-                    verify_contracts
+                    deploy_to_both
                     ;;
                 5)
+                    verify_contracts
+                    ;;
+                6)
                     print_info "Exiting..."
                     exit 0
                     ;;

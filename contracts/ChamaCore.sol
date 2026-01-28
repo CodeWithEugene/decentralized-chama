@@ -99,6 +99,14 @@ contract ChamaCore {
         if (memberList.length == 0) return address(0);
         return memberList[nextRecipientIndex];
     }
+
+    function getAllMembers() external view returns (Member[] memory) {
+        Member[] memory allMembers = new Member[](memberList.length);
+        for (uint i = 0; i < memberList.length; i++) {
+            allMembers[i] = members[memberList[i]];
+        }
+        return allMembers;
+    }
     
     // ============================================================================
     // CORE FUNCTIONS

@@ -1,0 +1,7 @@
+{
+  "network": "sepolia",
+  "timestamp": "Wed Jan 28 19:16:12 EAT 2026",
+  "chamaCore": "0x69990DC035ED6d1Ae845ce956657005E86812d7a",
+  "chamaKernel": "0xd7852832296A58Bd42C6aB4364077eD977A73699",
+  "rpcUrl": "https://testnet.hashio.io/api"
+}

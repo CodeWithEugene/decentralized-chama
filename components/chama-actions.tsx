@@ -83,7 +83,7 @@ export function CreateChamaDialog() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="amount" className="text-right">
-              Amount ({process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : 'ROSE'})
+              Amount ({process.env.NEXT_PUBLIC_NETWORK === 'HEDERA_TESTNET' ? 'HBAR' : (process.env.NEXT_PUBLIC_NETWORK === 'SEPOLIA' ? 'ETH' : 'ROSE')})
             </Label>
             <Input
               id="amount"
@@ -159,14 +159,14 @@ export function JoinChamaDialog() {
             <Label htmlFor="groupId" className="text-right">
               Group ID
             </Label>
-            <Input
-              id="groupId"
-              value={formData.groupId}
-              onChange={(e) => setFormData({ ...formData, groupId: e.target.value })}
-              className="col-span-3"
-              placeholder="0x..."
-              required
-            />
+              <Input
+                id="groupId"
+                value={formData.groupId}
+                onChange={(e) => setFormData({ ...formData, groupId: e.target.value })}
+                className="col-span-3"
+                placeholder="1"
+                required
+              />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="memberName" className="text-right">

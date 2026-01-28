@@ -37,7 +37,7 @@ export function CreateChamaDialog() {
         parseInt(formData.payoutCycle)
       );
       setOpen(false);
-      // Ideally show success toast
+      window.location.reload();
     } catch (err) {
       // Error handled in hook (state.error)
     }
@@ -134,7 +134,7 @@ export function JoinChamaDialog() {
     try {
       await joinGroup(formData.groupId, formData.memberName);
       setOpen(false);
-      // Ideally show success toast
+      window.location.reload();
     } catch (err) {
       // Error handled in hook
     }

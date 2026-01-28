@@ -54,6 +54,21 @@ export function useChamaFactory() {
 
         if (dbError) console.error('Supabase write failed:', dbError);
 
+        // Add creator as member
+        if (address) {
+             const { error: memberError } = await supabase.from('members').insert({
+                 group_id: newGroupId,
+                 address: address,
+                 name: 'Admin', // Default name, or prompt user?
+                 status: 'active',
+                 join_date: Math.floor(Date.now() / 1000),
+                 last_contribution: 0
+             });
+             if (memberError) console.error('Supabase member write failed:', memberError);
+        }
+
+        if (dbError) console.error('Supabase write failed:', dbError);
+
         setState((prev) => ({
             ...prev,
             isCreating: false,

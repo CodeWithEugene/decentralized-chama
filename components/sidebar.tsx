@@ -64,7 +64,7 @@ export function Sidebar({ currentPage, onPageChange, isCollapsed, onCollapse }: 
         } ${isCollapsed ? 'w-20 p-4' : 'w-64 p-6'} z-40`}
       >
         <div className="flex items-center justify-center">
-          {!isCollapsed && <img src="/logo.png" alt="Chama Logo" className="h-10 w-auto" />}
+          {!isCollapsed && <img src="/logo.png" alt="Chama Logo" className="h-8 w-auto" />}
           {isCollapsed && <img src="/icon.png" alt="Chama Icon" className="h-8 w-8" />}
         </div>
         

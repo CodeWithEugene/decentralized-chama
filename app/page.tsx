@@ -21,7 +21,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">

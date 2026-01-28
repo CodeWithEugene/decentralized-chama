@@ -3,7 +3,7 @@
 import { ethers } from 'ethers';
 import './web3-types';
 import { contractAbi, contractAddress } from './contract-config';
-import { oasisSapphire } from 'viem/chains';
+import { sapphireTestnet } from 'viem/chains';
 import { createClient } from './supabase/client';
 
 // ============================================================================
@@ -235,7 +235,7 @@ export const contractService = {
    */
   async addMember(groupId: string, memberAddress: string, memberName: string): Promise<string> {
     try {
-      const contract = getChamaContract();
+      const contract = await getChamaContract();
       const tx = await contract.addMember(groupId, memberAddress, memberName);
       console.log('[v0] Add member transaction:', tx.hash);
       
@@ -257,7 +257,7 @@ export const contractService = {
    */
   async removeMember(groupId: string, memberAddress: string): Promise<string> {
     try {
-      const contract = getChamaContract();
+      const contract = await getChamaContract();
       const tx = await contract.removeMember(groupId, memberAddress);
       console.log('[v0] Remove member transaction:', tx.hash);
       
@@ -279,7 +279,7 @@ export const contractService = {
    */
   async contribute(groupId: string, amount: string): Promise<string> {
     try {
-      const contract = getChamaContract();
+      const contract = await getChamaContract();
       const weiAmount = ethers.parseEther(amount);
       const tx = await contract.contribute(groupId, weiAmount);
       console.log('[v0] Contribution transaction:', tx.hash);
@@ -327,7 +327,7 @@ export const contractService = {
    */
   async processPayout(groupId: string, recipientAddress: string, amount: string): Promise<string> {
     try {
-      const contract = getChamaContract();
+      const contract = await getChamaContract();
       const weiAmount = ethers.parseEther(amount);
       const tx = await contract.processPayout(groupId, recipientAddress, weiAmount);
       console.log('[v0] Payout transaction:', tx.hash);
